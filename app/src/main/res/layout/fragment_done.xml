@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragmentDone"
+    android:layout_width="match_parent"
+    android:layout_height="650dp"
+    android:background="@drawable/rounded_edge_bottom_sheet">
+
+        <TextView
+            android:id="@+id/pertama_text"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/opensansbold"
+            android:gravity="center"
+            android:text="@string/text_done"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/isi_text_pertama"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:fontFamily="@font/opensansreguler"
+            android:gravity="center"
+            android:text="@string/text_sub_done"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/pertama_text"
+            app:layout_constraintStart_toStartOf="@+id/pertama_text"
+            app:layout_constraintTop_toBottomOf="@+id/pertama_text" />
+
+    <TextView
+        android:id="@+id/button_done"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/rounded_button_red"
+        android:fontFamily="@font/opensansbold"
+        android:gravity="center"
+        android:text="@string/btn_done"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_notyet" />
+
+        <TextView
+            android:id="@+id/button_notyet"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/button_noedge_white"
+            android:fontFamily="@font/opensansbold"
+            android:gravity="center"
+            android:text="@string/btn_notyet"
+            android:textColor="@color/red"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/isi_text_pertama"
+            app:layout_constraintStart_toStartOf="@+id/isi_text_pertama"
+            app:layout_constraintTop_toBottomOf="@+id/isi_text_pertama"
+            app:layout_constraintVertical_bias="0.07999998" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

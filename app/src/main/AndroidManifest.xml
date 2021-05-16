@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.g_one_nursesapp">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name_navbar"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true">
+        <activity android:name=".PredictionsActivity"
+            android:theme="@style/Theme.GoneNursesApp"/>
+        <activity
+            android:name=".auth.SignupActivity"
+            android:label="@string/title_activity_signup" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:theme="@style/Theme.GoneNursesAppSecond" />
+        <activity
+            android:name=".ProfileActivity"
+            android:theme="@style/Theme.GoneNursesAppSecond" />
+        <activity
+            android:name=".HistoryActivity"
+            android:theme="@style/Theme.GoneNursesAppSecond" />
+        <activity
+            android:name=".auth.ui.login.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.GoneNursesAppSecond" />
+        <activity
+            android:name=".actions.InjuryCheckActivity"
+            android:theme="@style/Theme.GoneNursesAppSecond" />
+        <activity
+            android:name=".actions.RespirationsCheckActivity"
+            android:theme="@style/Theme.GoneNursesAppSecond" />
+        <activity
+            android:name=".actions.ConsciousCheckActivity"
+            android:theme="@style/Theme.GoneNursesAppSecond" />
+        <activity
+            android:name=".actions.TensiCheckActivity"
+            android:theme="@style/Theme.GoneNursesAppSecond" />
+        <activity
+            android:name=".faskes.RecomendFaskesActivity"
+            android:theme="@style/Theme.GoneNursesAppSecond" />
+        <activity
+            android:name=".ListActionsActivity"
+            android:theme="@style/Theme.GoneNursesAppSecond" />
+        <activity
+            android:name=".ChatFieldActivity"
+            android:theme="@style/Theme.GoneNursesApp" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.GoneNursesApp">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.g_one_nursesapp.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/fileprovider" />
+        </provider>
+    </application>
+
+</manifest>

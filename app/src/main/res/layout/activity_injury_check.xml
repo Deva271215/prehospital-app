@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/checkConsciousFragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:scrollbars="horizontal">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp">
+
+        <Spinner
+            android:id="@+id/inputInjury1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_botton_noedge"
+            android:entries="@array/inputResponEye"
+            android:paddingStart="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pertama_text"
+            tools:ignore="RtlSymmetry" />
+
+        <Spinner
+            android:id="@+id/inputInjury2"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_botton_noedge"
+            android:entries="@array/inputResponEye"
+            android:paddingStart="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputInjury1"
+            tools:ignore="RtlSymmetry" />
+
+        <Spinner
+            android:id="@+id/inputInjury3"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_botton_noedge"
+            android:entries="@array/inputResponEye"
+            android:paddingStart="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputInjury2"
+            tools:ignore="RtlSymmetry" />
+
+        <Spinner
+            android:id="@+id/inputInjury4"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_botton_noedge"
+            android:entries="@array/inputResponEye"
+            android:paddingStart="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputInjury3"
+            tools:ignore="RtlSymmetry" />
+
+        <Spinner
+            android:id="@+id/inputInjury5"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_botton_noedge"
+            android:entries="@array/inputResponEye"
+            android:paddingStart="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputInjury4"
+            tools:ignore="RtlSymmetry" />
+
+        <Spinner
+            android:id="@+id/inputInjury6"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_botton_noedge"
+            android:entries="@array/inputResponEye"
+            android:paddingStart="30dp"
+            app:layout_constraintTop_toBottomOf="@+id/inputInjury5" />
+
+        <Spinner
+            android:id="@+id/inputInjury7"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_botton_noedge"
+            android:entries="@array/inputResponEye"
+            android:paddingStart="30dp"
+            app:layout_constraintTop_toBottomOf="@+id/inputInjury6" />
+
+        <TextView
+            android:id="@+id/pertama_text"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/opensansreguler"
+            android:gravity="center"
+            android:text="@string/text_cekLuka"
+            android:textColor="@color/red"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/button_submite"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/rounded_botton_noedge"
+            android:fontFamily="@font/opensansbold"
+            android:gravity="center"
+            android:text="@string/button_send"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputInjury7" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -1,0 +1,103 @@
+<resources>
+    <string name="app_name">G-one</string>
+    <string name="app_name_navbar"> </string>
+
+    <string name="title_activity_login">Login</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Masuk</string>
+    <string name="action_sign_up">Daftar</string>
+    <string name="action_notyet_accout">Belum punya akun? Daftar</string>
+    <string name="action_already_accout">Sudah punya akun? Masuk</string>
+    <string name="action_sign_in_short">Masuk</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+    <string name="name">BPBD Denpasar 1</string>
+    <string name="mulai_text">MULAI</string>
+    <string name="yakin_text">Yakin</string>
+    <string name="time">04.00</string>
+    <string name="title_card">Pertolongan Pertama</string>
+    <string name="gambar_pertolongan">Gambar Pertolongan Pertama</string>
+
+    <string name="text_hasil">Hasil :</string>
+    <string name="text_kondisi">Kondisi :</string>
+    <string name="text_respon">Respon :</string>
+    <string name="text_respon_input">Respon pasien</string>
+    <string name="text_kondisi_input">Kondisi pasien</string>
+
+
+    <string name="button_send">SIMPAN</string>
+
+    <string name="traumaName">Nama Cedera/Penyakit</string>
+    <string name="value_hasil">20/80</string>
+    <string name="value_groupName">BPBD Denpasar 1</string>
+    <string name="value_respon">Normal</string>
+    <string name="value_location">Baypass Ida Bagus Mantra</string>
+    <string name="value_kondisi">Sadar</string>
+    <string name="value_traumaName">Patah Tulang</string>
+    <string name="value_distance">15 Km</string>
+    <string name="value_rcmFaskes">RSUP Sanglah</string>
+    <string name="value_historyTime">Senin, 10 Juni 2018 - 10:06</string>
+    <string name="perlakuan">Cek Tensi</string>
+    <string name="value_tindakan">Cek Tensi</string>
+    <string name="value_email">bpbddenpasa1@gmail.com</string>
+    <string name="value_noHp">08553300000</string>
+    <string name="value_percent">70%</string>
+    <string name="history_title">History</string>
+    <string name="search_hint">Cari tindakan</string>
+
+
+    <string name="hint_groupName">Nama kelompok</string>
+    <string name="hint_noHp">Nomor handphone</string>
+    <string name="hint_email">Email</string>
+
+
+    <string name="btn_cekKesadaran">Periksa Kesadaran</string>
+    <string name="btn_cekPernafasan">Periksa Pernafasan</string>
+    <string name="btn_cekTensi">Cek Tensi</string>
+    <string name="btn_pasangInfus">Pemasangan Infus</string>
+    <string name="btn_cekLuka">Periksa Cidera/Luka</string>
+    <string name="btn_done">Sudah</string>
+    <string name="btn_notyet">Belum</string>
+    <string name="btn_finish">Selesai</string>
+
+    <string name="text_groupName">Nama Kelompok</string>
+    <string name="text_email">Email</string>
+    <string name="text_noHp">No. HP</string>
+    <string name="text_login">Masuk untuk mulai melakukan pertolongan</string>
+    <string name="text_signup">Daftar untuk mulai melakukan pertolongan</string>
+    <string name="text_cekKesadaran">Hasil pemeriksaan akan dikalkulasikan untuk mengetahui skor GCP korban</string>
+    <string name="text_cekTensi">Hasil cek tensi akan direkam ke dalam rekam medis</string>
+    <string name="text_systole">Masukan Systole</string>
+    <string name="text_diastole">Masukan Distole</string>
+    <string name="text_pasangInfus">Waktu pesangan infus akan direkam dalam rekam medis korban</string>
+    <string name="text_done">Apakah semua tindakan sudah selesai?</string>
+    <string name="text_sub_done">Semua data akan disimpan dan prediksi trauma/penyakit akan ditunjukan</string>
+    <string name="text_cekPernafasan">Masukan hasil pengecekan dan bantuan pernafasan yang diberikan</string>
+    <string name="text_cekLuka">Pilih dan masukan cidera korban kemudian tekan simpan</string>
+
+    <string name="muali_penanganan">Mulai Penanganan</string>
+    <string name="pilih_tindakan">PILIH TINDAKAN</string>
+    <string name="pertama">Pertama!</string>
+    <string name="belum_disimpan">Informasi belum disimpan</string>
+    <string name="belum_disimpan_isi">Ada informasi yang belum disimpan. Anda yakin ingin keluar?</string>
+    <string name="isi_text_pertama">Foto posisi pasien sebelum dilakukan pertolongan.</string>
+    <string name="foto_posisi">Foto Posisi Awal Pasien di lokasi.</string>
+    <string name="mulai_foto">Mulai Foto</string>
+    <string name="title_activity_chat_field">Live Rekam Medis</string>
+    <string name="title_activity_list_actions">Daftar Tindakan</string>
+
+    <string name="hello_world">Hello Square World!</string>
+
+    <string-array name="inputResponEye">
+        <item>Bagiamana respon mata pasien</item>
+        <item>Tidak ada respon (1)</item>
+        <item>Bereaksi saat rangsang nyeri (2)</item>
+        <item>Beraksi saat diperintah buka mata (3)</item>
+        <item>Mata terbuka normal tanpa rangsangan dan perintah (4)</item>
+    </string-array>
+    <string name="title_activity_signup">SignupActivity</string>
+</resources>
