@@ -137,6 +137,4 @@ class ChatFieldActivity : AppCompatActivity() {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
-
-
 }
