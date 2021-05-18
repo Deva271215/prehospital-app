@@ -1,4 +1,4 @@
-package com.g_one_nursesapp.auth.ui.login
+package com.g_one_nursesapp.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
