@@ -2,6 +2,7 @@ package com.g_one_nursesapp.auth.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.g_one_nursesapp.ProfileActivity
@@ -10,6 +11,7 @@ import com.g_one_nursesapp.api.RetrofitClient
 import com.g_one_nursesapp.auth.data.storage.SharedPrefManager
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_signup.*
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,8 +25,8 @@ class LoginActivity : AppCompatActivity() {
 
         buttonLogin.setOnClickListener {
 
-            val email = editTextEmail.text.toString().trim()
-            val password = editTextPassword.text.toString().trim()
+            val email = loginEmail.text.toString().trim()
+            val password = loginPassword.text.toString().trim()
 
             if(email.isEmpty()){
                 editTextEmail.error = "Email required"
@@ -46,18 +48,21 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                        if(!response.body()?.error!!){
+                        var res = response
 
-                            SharedPrefManager.getInstance(applicationContext).saveUser(response.body()?.user!!)
-
-                            val intent = Intent(applicationContext, ProfileActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-                            startActivity(intent)
-
-
-                        }else{
-                            Toast.makeText(applicationContext, response.body()?.message, Toast.LENGTH_LONG).show()
+                        Log.d("response check ", "" + response.body()?.message.toString())
+                        if (res.code() == 200) {
+                            SharedPrefManager.getInstance(applicationContext).saveUser(response.body()?.data!!)
+                            loginResultEmitter.emit(LoginResult.Success)
+                        } else {
+                            try {
+                                val jObjError =
+                                    JSONObject(response.errorBody()!!.string())
+                                loginResultEmitter.emit(LoginResult.NetworkError(jObjError.getString("user_msg")))
+                            } catch (e: Exception) {
+                                // showToast(applicationContext,e.message) // TODO
+                                Log.e("errorrr", e.message)
+                            }
                         }
 
                     }

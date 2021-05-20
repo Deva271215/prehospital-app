@@ -17,6 +17,7 @@ interface Api {
         @Field("telp") noHp: String,
     ): Call<DefaultResponse>
 
+    @FormUrlEncoded
     @POST("/auth/sign-in")
     fun userLogin(
         @Field("email") email: String,
