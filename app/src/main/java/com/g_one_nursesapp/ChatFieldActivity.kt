@@ -108,7 +108,7 @@ class ChatFieldActivity : AppCompatActivity() {
                 startActivityForResult(takePictureIntent, REQUEST_CODE)
                 bottomSheetDialog.dismiss()
             }else{
-                Toast.makeText(this@ChatFieldActivity, "Cant Open Camera", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ChatFieldActivity, "Can't Open Camera", Toast.LENGTH_SHORT).show()
             }
         }
 

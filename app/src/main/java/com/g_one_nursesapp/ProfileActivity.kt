@@ -30,21 +30,10 @@ class ProfileActivity : AppCompatActivity() {
         btnHistory.setOnClickListener{
             val intent = Intent(this, EditProfileActivity::class.java)
             startActivity(intent)
-
         }
 
         return super.onOptionsItemSelected(item)
 
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        if(!SharedPrefManager.getInstance(this).isLoggedIn){
-            val intent = Intent(applicationContext, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
