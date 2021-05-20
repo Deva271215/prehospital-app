@@ -1,10 +1,9 @@
 package com.g_one_nursesapp.api
 
-import com.g_one_nursesapp.auth.login.LoginResponse
+import com.g_one_nursesapp.api.response.LoginResponse
+import com.g_one_nursesapp.entity.UserEntity
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface Api {
 
@@ -17,10 +16,9 @@ interface Api {
         @Field("telp") noHp: String,
     ): Call<DefaultResponse>
 
-    @FormUrlEncoded
-    @POST("/auth/sign-in")
+    @POST("auth/sign-in")
+    @Headers("Content-Type: application/json", "Accept: application/json")
     fun userLogin(
-        @Field("email") email: String,
-        @Field("password") password: String,
+            @Body user: UserEntity
     ): Call<LoginResponse>
 }
