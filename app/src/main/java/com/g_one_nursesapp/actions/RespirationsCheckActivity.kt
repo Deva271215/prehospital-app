@@ -1,21 +1,37 @@
 package com.g_one_nursesapp.actions
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.g_one_nursesapp.ChatFieldActivity
 import com.g_one_nursesapp.R
+import com.g_one_nursesapp.database.AppRepository
+import com.g_one_nursesapp.entity.MessageEntity
+import com.g_one_nursesapp.viewmodels.RespirationCheckViewModel
 import kotlinx.android.synthetic.main.activity_conscious_check.*
 import kotlinx.android.synthetic.main.activity_respirations_check.*
 import kotlinx.android.synthetic.main.activity_tensi_check.*
-import kotlinx.android.synthetic.main.fragment_check_conscious.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class RespirationsCheckActivity : AppCompatActivity() {
+    private lateinit var checkResult: String
+    private lateinit var givenAction: String
+    private lateinit var patientResponse: String
+
+    private lateinit var respirationCheckViewModel: RespirationCheckViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_respirations_check)
+
+        respirationCheckViewModel = ViewModelProvider(this).get(RespirationCheckViewModel::class.java)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Periksa Pernafasan"
@@ -25,14 +41,11 @@ class RespirationsCheckActivity : AppCompatActivity() {
         inputCheckResp.adapter = adapterRespiration
         inputCheckResp.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                Toast.makeText(
-                        this@RespirationsCheckActivity,
-                        "Anda memilih ${adapterView?.getItemAtPosition(position).toString()}",
-                        Toast.LENGTH_LONG).show()
+                checkResult = adapterView?.getItemAtPosition(position).toString()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-
+                checkResult = ""
             }
         }
 
@@ -41,41 +54,44 @@ class RespirationsCheckActivity : AppCompatActivity() {
         inputRespAssis.adapter = adapterResp
         inputRespAssis.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                Toast.makeText(
-                        this@RespirationsCheckActivity,
-                        "Anda memilih ${adapterView?.getItemAtPosition(position).toString()}",
-                        Toast.LENGTH_LONG).show()
+                givenAction = adapterView?.getItemAtPosition(position).toString()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-
+                givenAction = ""
             }
         }
 
         val spRespon = listOf("Respon pasien setelah bantuan", "Pernafasan berangsur nomal", "Pernafasan masih terganggu")
-        val adapterRespon = ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spRespon)
+        val adapterRespon = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, spRespon)
         inputRespon.adapter = adapterRespon
         inputRespon.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                Toast.makeText(
-                        this@RespirationsCheckActivity,
-                        "Anda memilih ${adapterView?.getItemAtPosition(position).toString()}",
-                        Toast.LENGTH_LONG).show()
+                patientResponse = adapterView?.getItemAtPosition(position).toString()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-
+                patientResponse = ""
             }
         }
 
-//        setButtonSubmit()
-    }
+        val buttonSubmit = findViewById<TextView>(R.id.button_submite)
+        buttonSubmit.setOnClickListener {
+            val message = MessageEntity(
+                id = UUID.randomUUID().toString(),
+                message = "Periksa pernafasan",
+                result = checkResult,
+                condition = null,
+                response = patientResponse,
+                action = givenAction,
+                time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")).toString(),
+            )
+            respirationCheckViewModel.insertOneMessage(message)
 
-//    private fun setButtonSubmit(){
-//        button_submite.setOnClickListener {
-//            Toast.makeText(this@RespirationsCheckActivity, "Value Submited", Toast.LENGTH_LONG).show()
-//        }
-//    }
+            val intent = Intent(this, ChatFieldActivity::class.java)
+            startActivity(intent)
+        }
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
