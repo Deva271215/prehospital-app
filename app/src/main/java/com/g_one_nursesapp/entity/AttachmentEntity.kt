@@ -1,10 +1,17 @@
 package com.g_one_nursesapp.entity
 
+import android.os.Message
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "attachments")
+@Entity(tableName = "attachments", foreignKeys = [ForeignKey(
+    entity = MessageEntity::class,
+    parentColumns = ["id"],
+    childColumns = ["message_id"],
+    onDelete = ForeignKey.CASCADE
+)])
 data class AttachmentEntity(
     @PrimaryKey
     val id: String,

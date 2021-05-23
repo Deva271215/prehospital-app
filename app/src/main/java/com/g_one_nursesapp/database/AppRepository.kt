@@ -11,6 +11,9 @@ class AppRepository(private val appDao: AppDao) {
     suspend fun insertOneMessage(message: MessageEntity) {
         appDao.insertOneMessage(message)
     }
+    suspend fun deleteMessages() {
+        appDao.deleteMessages()
+    }
 
     // Attachment
     val fetchAttachments: LiveData<List<AttachmentEntity>> = appDao.fetchAttachments()

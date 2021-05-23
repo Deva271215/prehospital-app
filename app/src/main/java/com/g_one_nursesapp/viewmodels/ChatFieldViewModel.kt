@@ -28,6 +28,10 @@ class ChatFieldViewModel(application: Application): AndroidViewModel(application
         appRepository.insertOneMessage(message)
     }
 
+    fun deleteMessages() = viewModelScope.launch(Dispatchers.IO) {
+        appRepository.deleteMessages()
+    }
+
     fun insertOneAttachment(attachment: AttachmentEntity) = viewModelScope.launch(Dispatchers.IO) {
         appRepository.insertOneAttachment(attachment)
     }

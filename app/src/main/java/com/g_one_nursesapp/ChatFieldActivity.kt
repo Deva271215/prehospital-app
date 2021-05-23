@@ -63,7 +63,7 @@ class ChatFieldActivity : AppCompatActivity() {
 
             bottomSheetViewAlertBack.findViewById<View>(R.id.button_yakin).setOnClickListener{
                 onBackPressed()
-
+                chatFieldViewModel.deleteMessages()
                 bottomSheetDialogAlertBack.dismiss()
             }
 

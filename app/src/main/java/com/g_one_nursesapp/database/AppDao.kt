@@ -12,6 +12,9 @@ interface AppDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertOneMessage(message: MessageEntity)
 
+    @Query("DELETE FROM messages")
+    suspend fun deleteMessages()
+
     @Transaction
     @Query("SELECT * FROM messages")
     fun fetchMessages(): LiveData<List<MessageWithAttachments>>
