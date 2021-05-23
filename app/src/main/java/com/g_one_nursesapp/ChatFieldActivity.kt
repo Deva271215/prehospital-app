@@ -148,7 +148,11 @@ class ChatFieldActivity : AppCompatActivity() {
             chatFieldViewModel.insertOneMessage(message)
 
             // Create attachment
-            val attachment = AttachmentEntity(id = UUID.randomUUID().toString(), source = photoFile.absolutePath)
+            val attachment = AttachmentEntity(
+                id = UUID.randomUUID().toString(),
+                source = photoFile.absolutePath,
+                messageId = messageId
+            )
             chatFieldViewModel.insertOneAttachment(attachment)
 
             docImage.setImageBitmap(takenImage)

@@ -14,4 +14,7 @@ data class AttachmentEntity(
 
     @ColumnInfo(name = "is_delete")
     val isDeleted: Boolean = false,
+
+    @ColumnInfo(name = "message_id")
+    val messageId: String,
 )

@@ -2,12 +2,10 @@ package com.g_one_nursesapp.database
 
 import android.os.Message
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.g_one_nursesapp.entity.AttachmentEntity
 import com.g_one_nursesapp.entity.MessageEntity
+import com.g_one_nursesapp.entity.relation.MessageWithAttachments
 
 @Dao
 interface AppDao {
@@ -15,8 +13,9 @@ interface AppDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertOneMessage(message: MessageEntity)
 
+    @Transaction
     @Query("SELECT * FROM messages")
-    fun fetchMessages(): LiveData<List<MessageEntity>>
+    fun fetchMessages(): LiveData<List<MessageWithAttachments>>
 
     // Attachment
     @Insert(onConflict = OnConflictStrategy.IGNORE)
