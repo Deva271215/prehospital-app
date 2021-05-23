@@ -23,34 +23,31 @@ class ChatFieldAdapter: RecyclerView.Adapter<ChatFieldAdapter.ViewHolder>() {
             with(itemView) {
                 title_chat.text = item.message.message
                 time.text = item.message.time
-                when {
-                    !item.message.response.isNullOrEmpty() -> {
-                        text_respon.visibility = View.VISIBLE
-                        value_respon.visibility = View.VISIBLE
-                        value_respon.text = item.message.response
-                    }
-                    !item.message.result.isNullOrEmpty() -> {
-                        text_hasil.visibility = View.VISIBLE
-                        value_hasil.visibility = View.VISIBLE
-                        value_hasil.text = item.message.result
-                    }
-                    !item.message.condition.isNullOrEmpty() -> {
-                        text_kondisi.visibility = View.VISIBLE
-                        value_kondisi.visibility = View.VISIBLE
-                        value_kondisi.text = item.message.condition
-                    }
-                    !item.message.action.isNullOrEmpty() -> {
-                        text_aksi.visibility = View.VISIBLE
-                        value_aksi.visibility = View.VISIBLE
-                        value_aksi.text = item.message.action
-                    }
-                    !item.attachments.isNullOrEmpty() -> {
-                        cardView.visibility = View.VISIBLE
-                        Glide.with(itemView.context)
-                            .load(item.attachments[0].source)
-                            .into(docPicture)
-                    }
-                    else -> false
+                if (!item.message.response.isNullOrEmpty()) {
+                    text_respon.visibility = View.VISIBLE
+                    value_respon.visibility = View.VISIBLE
+                    value_respon.text = item.message.response
+                }
+                if (!item.message.result.isNullOrEmpty()) {
+                    text_hasil.visibility = View.VISIBLE
+                    value_hasil.visibility = View.VISIBLE
+                    value_hasil.text = item.message.result
+                }
+                if (!item.message.condition.isNullOrEmpty()) {
+                    text_kondisi.visibility = View.VISIBLE
+                    value_kondisi.visibility = View.VISIBLE
+                    value_kondisi.text = item.message.condition
+                }
+                if (!item.message.action.isNullOrEmpty()) {
+                    text_aksi.visibility = View.VISIBLE
+                    value_aksi.visibility = View.VISIBLE
+                    value_aksi.text = item.message.action
+                }
+                if (!item.attachments.isNullOrEmpty()) {
+                    cardView.visibility = View.VISIBLE
+                    Glide.with(itemView.context)
+                        .load(item.attachments[0].source)
+                        .into(docPicture)
                 }
             }
         }

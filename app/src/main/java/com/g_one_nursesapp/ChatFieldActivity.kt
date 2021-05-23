@@ -30,10 +30,6 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-private const val FILE_NAME = "photo.jpg"
-private const val REQUEST_CODE = 42
-private lateinit var photoFile: File
-
 class ChatFieldActivity : AppCompatActivity() {
     private lateinit var chatFieldViewModel: ChatFieldViewModel
     private lateinit var chatFieldAdapter: ChatFieldAdapter
@@ -71,7 +67,10 @@ class ChatFieldActivity : AppCompatActivity() {
             bottomSheetDialogAlertBack.show()
         }
 
-        setBottomSheetStart()
+        chatFieldViewModel.fetchMessages.observe(this, {
+            chatFieldAdapter.setMessage(it)
+        })
+
         setButtonTindakan()
     }
 
@@ -108,76 +107,10 @@ class ChatFieldActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setBottomSheetStart(){
-        val bottomSheetDialog = BottomSheetDialog(
-                this@ChatFieldActivity, R.style.BottomSheetFragmentTheme
-        )
-
-        val bottomSheetView = LayoutInflater.from(applicationContext).inflate(
-                R.layout.fragment_open_cam,
-                findViewById<LinearLayout>(R.id.openCamFragment)
-        )
-
-        bottomSheetView.findViewById<View>(R.id.button_openCam).setOnClickListener{
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            photoFile = getPhotoFile(FILE_NAME)
-
-            val fileProvider = FileProvider.getUriForFile(this, "com.g_one_nursesapp.fileprovider", photoFile)
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
-            if(takePictureIntent.resolveActivity(this.packageManager) != null){
-                startActivityForResult(takePictureIntent, REQUEST_CODE)
-                bottomSheetDialog.dismiss()
-            }else{
-                Toast.makeText(this@ChatFieldActivity, "Can't Open Camera", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        bottomSheetDialog.setContentView(bottomSheetView)
-        bottomSheetDialog.show()
-    }
-
     private fun setButtonTindakan(){
         btnTindakan.setOnClickListener{
             val intent = Intent(this, ListActionsActivity::class.java)
             startActivity(intent)
-        }
-    }
-
-    private fun getPhotoFile(fileName: String): File{
-        val storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(fileName, ".jpg", storageDirectory)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
-            // Create message
-            val messageId = UUID.randomUUID().toString()
-            val messageTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")).toString()
-            val message = MessageEntity(
-                id = messageId,
-                message = "Posisi awal",
-                result = null,
-                condition = null,
-                response = null,
-                action = null,
-                time = messageTime,
-            )
-            chatFieldViewModel.insertOneMessage(message)
-
-            // Create attachment
-            val attachment = AttachmentEntity(
-                id = UUID.randomUUID().toString(),
-                source = photoFile.absolutePath,
-                messageId = messageId
-            )
-            chatFieldViewModel.insertOneAttachment(attachment)
-
-            chatFieldViewModel.fetchMessages.observe(this, {
-                chatFieldAdapter.setMessage(it)
-            })
-        }else{
-            super.onActivityResult(requestCode, resultCode, data)
         }
     }
 }
