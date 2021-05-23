@@ -1,5 +1,6 @@
 package com.g_one_nursesapp.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,9 +22,31 @@ class ChatFieldAdapter: RecyclerView.Adapter<ChatFieldAdapter.ViewHolder>() {
         fun bind(item: MessageWithAttachments) {
             with(itemView) {
                 title_chat.text = item.message.message
-                Glide.with(itemView.context)
-                    .load(item.attachments.source)
-                    .into(docPicture)
+                time.text = item.message.time
+                when {
+                    !item.message.response.isNullOrEmpty() -> {
+                        text_respon.visibility = View.VISIBLE
+                        value_respon.visibility = View.VISIBLE
+                        value_respon.text = item.message.response
+                    }
+                    !item.message.result.isNullOrEmpty() -> {
+                        text_hasil.visibility = View.VISIBLE
+                        value_hasil.visibility = View.VISIBLE
+                        value_hasil.text = item.message.result
+                    }
+                    !item.message.condition.isNullOrEmpty() -> {
+                        text_kondisi.visibility = View.VISIBLE
+                        value_kondisi.visibility = View.VISIBLE
+                        value_kondisi.text = item.message.condition
+                    }
+                    !item.attachments.isNullOrEmpty() -> {
+                        cardView.visibility = View.VISIBLE
+                        Glide.with(itemView.context)
+                            .load(item.attachments[0].source)
+                            .into(docPicture)
+                    }
+                    else -> false
+                }
             }
         }
     }

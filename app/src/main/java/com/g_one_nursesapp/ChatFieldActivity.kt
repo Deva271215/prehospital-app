@@ -25,6 +25,9 @@ import kotlinx.android.synthetic.main.activity_chat_field.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import java.io.File
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 private const val FILE_NAME = "photo.jpg"
@@ -60,6 +63,7 @@ class ChatFieldActivity : AppCompatActivity() {
 
             bottomSheetViewAlertBack.findViewById<View>(R.id.button_yakin).setOnClickListener{
                 onBackPressed()
+
                 bottomSheetDialogAlertBack.dismiss()
             }
 
@@ -147,11 +151,17 @@ class ChatFieldActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
-            val takenImage = BitmapFactory.decodeFile(photoFile.absolutePath)
-
             // Create message
             val messageId = UUID.randomUUID().toString()
-            val message = MessageEntity(id = messageId, message = "Posisi awal")
+            val messageTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")).toString()
+            val message = MessageEntity(
+                id = messageId,
+                message = "Posisi awal",
+                result = null,
+                condition = null,
+                response = null,
+                time = messageTime,
+            )
             chatFieldViewModel.insertOneMessage(message)
 
             // Create attachment
