@@ -14,22 +14,30 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import androidx.lifecycle.ViewModelProvider
+import com.g_one_nursesapp.entity.AttachmentEntity
+import com.g_one_nursesapp.viewmodels.ChatFieldViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_chat_field.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import java.io.File
+import java.util.*
 
 private const val FILE_NAME = "photo.jpg"
 private const val REQUEST_CODE = 42
 private lateinit var photoFile: File
 
 class ChatFieldActivity : AppCompatActivity() {
+    private lateinit var chatFieldViewModel: ChatFieldViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_field)
 
         setSupportActionBar(toolbar)
+
+        chatFieldViewModel = ViewModelProvider(this).get(ChatFieldViewModel::class.java)
 
         toolbar.setNavigationOnClickListener{
 
@@ -132,6 +140,11 @@ class ChatFieldActivity : AppCompatActivity() {
 
         if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
             val takenImage = BitmapFactory.decodeFile(photoFile.absolutePath)
+
+            // Create attachment
+            val attachment = AttachmentEntity(id = UUID.randomUUID().toString(), source = photoFile.absolutePath)
+            chatFieldViewModel.insertOneAttachment(attachment)
+
             docImage.setImageBitmap(takenImage)
         }else{
             super.onActivityResult(requestCode, resultCode, data)
