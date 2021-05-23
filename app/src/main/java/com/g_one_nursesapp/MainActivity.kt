@@ -20,6 +20,7 @@ import com.g_one_nursesapp.adapters.ChatFieldAdapter
 import com.g_one_nursesapp.entity.AttachmentEntity
 import com.g_one_nursesapp.entity.MessageEntity
 import com.g_one_nursesapp.viewmodels.ChatFieldViewModel
+import com.g_one_nursesapp.viewmodels.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_chat_field.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var photoFile: File
     private lateinit var bottomSheetDialog: BottomSheetDialog
 
-    private lateinit var chatFieldViewModel: ChatFieldViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-        chatFieldViewModel = ViewModelProvider(this).get(ChatFieldViewModel::class.java)
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         toolbar.setNavigationOnClickListener{
             val intent = Intent(this, ProfileActivity::class.java)
@@ -124,7 +125,7 @@ class MainActivity : AppCompatActivity() {
                 action = null,
                 time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")).toString(),
             )
-            chatFieldViewModel.insertOneMessage(message)
+            mainViewModel.insertOneMessage(message)
 
             // Create attachment
             val attachment = AttachmentEntity(
@@ -132,7 +133,7 @@ class MainActivity : AppCompatActivity() {
                 source = photoFile.absolutePath,
                 messageId = messageId
             )
-            chatFieldViewModel.insertOneAttachment(attachment)
+            mainViewModel.insertOneAttachment(attachment)
 
             val intent = Intent(this, ChatFieldActivity::class.java)
             startActivity(intent)

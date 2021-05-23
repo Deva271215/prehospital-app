@@ -74,6 +74,11 @@ class ChatFieldActivity : AppCompatActivity() {
         setButtonTindakan()
     }
 
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.done_menu, menu)
         return super.onCreateOptionsMenu(menu)
