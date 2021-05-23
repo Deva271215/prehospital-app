@@ -13,5 +13,5 @@ data class MessageWithAttachments(
         parentColumn = "id",
         entityColumn = "message_id"
     )
-    val attachments: AttachmentEntity
+    val attachments: List<AttachmentEntity>
 )
