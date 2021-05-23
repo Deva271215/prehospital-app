@@ -15,6 +15,8 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.g_one_nursesapp.adapters.ChatFieldAdapter
 import com.g_one_nursesapp.entity.AttachmentEntity
 import com.g_one_nursesapp.entity.MessageEntity
 import com.g_one_nursesapp.viewmodels.ChatFieldViewModel
@@ -31,12 +33,17 @@ private lateinit var photoFile: File
 
 class ChatFieldActivity : AppCompatActivity() {
     private lateinit var chatFieldViewModel: ChatFieldViewModel
+    private lateinit var chatFieldAdapter: ChatFieldAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_field)
 
         setSupportActionBar(toolbar)
+
+        chatFieldAdapter = ChatFieldAdapter()
+        rvChatField.layoutManager = LinearLayoutManager(applicationContext)
+        rvChatField.adapter = chatFieldAdapter
 
         chatFieldViewModel = ViewModelProvider(this).get(ChatFieldViewModel::class.java)
 
@@ -155,7 +162,9 @@ class ChatFieldActivity : AppCompatActivity() {
             )
             chatFieldViewModel.insertOneAttachment(attachment)
 
-            docImage.setImageBitmap(takenImage)
+            chatFieldViewModel.fetchMessages.observe(this, {
+                chatFieldAdapter.setMessage(it)
+            })
         }else{
             super.onActivityResult(requestCode, resultCode, data)
         }

@@ -1,6 +1,5 @@
 package com.g_one_nursesapp.database
 
-import android.os.Message
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.g_one_nursesapp.entity.AttachmentEntity
