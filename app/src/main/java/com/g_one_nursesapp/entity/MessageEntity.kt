@@ -28,6 +28,10 @@ class MessageEntity(
     @Nullable
     val condition: String?,
 
+    @ColumnInfo
+    @Nullable
+    val action: String?,
+
     @ColumnInfo(name = "time")
     val time: String,
 

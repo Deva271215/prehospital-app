@@ -160,6 +160,7 @@ class ChatFieldActivity : AppCompatActivity() {
                 result = null,
                 condition = null,
                 response = null,
+                action = null,
                 time = messageTime,
             )
             chatFieldViewModel.insertOneMessage(message)

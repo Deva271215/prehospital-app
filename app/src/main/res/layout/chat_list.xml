@@ -116,4 +116,23 @@
         app:layout_constraintBottom_toBottomOf="@+id/text_kondisi"
         app:layout_constraintStart_toEndOf="@+id/text_kondisi" />
 
+    <TextView
+        android:id="@+id/text_aksi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_aksi"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/text_kondisi"
+        app:layout_constraintTop_toBottomOf="@+id/text_kondisi" />
+
+    <TextView
+        android:id="@+id/value_aksi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/value_aksi"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/text_aksi"
+        app:layout_constraintStart_toEndOf="@+id/text_aksi" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -39,6 +39,11 @@ class ChatFieldAdapter: RecyclerView.Adapter<ChatFieldAdapter.ViewHolder>() {
                         value_kondisi.visibility = View.VISIBLE
                         value_kondisi.text = item.message.condition
                     }
+                    !item.message.action.isNullOrEmpty() -> {
+                        text_aksi.visibility = View.VISIBLE
+                        value_aksi.visibility = View.VISIBLE
+                        value_aksi.text = item.message.action
+                    }
                     !item.attachments.isNullOrEmpty() -> {
                         cardView.visibility = View.VISIBLE
                         Glide.with(itemView.context)

@@ -25,6 +25,7 @@
     <string name="text_hasil">Hasil :</string>
     <string name="text_kondisi">Kondisi :</string>
     <string name="text_respon">Respon :</string>
+    <string name="text_aksi">Aksi :</string>
     <string name="text_respon_input">Respon pasien</string>
     <string name="text_kondisi_input">Kondisi pasien</string>
 
@@ -37,6 +38,7 @@
     <string name="value_respon">Normal</string>
     <string name="value_location">Baypass Ida Bagus Mantra</string>
     <string name="value_kondisi">Sadar</string>
+    <string name="value_aksi">Pemberian oksigen</string>
     <string name="value_traumaName">Patah Tulang</string>
     <string name="value_distance">15 Km</string>
     <string name="value_rcmFaskes">RSUP Sanglah</string>
