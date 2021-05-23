@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import com.g_one_nursesapp.entity.AttachmentEntity
+import com.g_one_nursesapp.entity.MessageEntity
 import com.g_one_nursesapp.viewmodels.ChatFieldViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_chat_field.*
@@ -140,6 +141,11 @@ class ChatFieldActivity : AppCompatActivity() {
 
         if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
             val takenImage = BitmapFactory.decodeFile(photoFile.absolutePath)
+
+            // Create message
+            val messageId = UUID.randomUUID().toString()
+            val message = MessageEntity(id = messageId, message = "Posisi awal")
+            chatFieldViewModel.insertOneMessage(message)
 
             // Create attachment
             val attachment = AttachmentEntity(id = UUID.randomUUID().toString(), source = photoFile.absolutePath)

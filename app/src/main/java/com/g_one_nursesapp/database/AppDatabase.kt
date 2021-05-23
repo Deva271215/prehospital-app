@@ -5,8 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.g_one_nursesapp.entity.AttachmentEntity
+import com.g_one_nursesapp.entity.MessageEntity
 
-@Database(entities = [AttachmentEntity::class], version = 1, exportSchema = false)
+@Database(
+    entities = [MessageEntity::class, AttachmentEntity::class],
+    version = 1,
+    exportSchema = false
+)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun appDao(): AppDao
 
