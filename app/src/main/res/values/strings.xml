@@ -93,13 +93,27 @@
     <string name="title_activity_list_actions">Daftar Tindakan</string>
 
     <string name="hello_world">Hello Square World!</string>
-
-    <string-array name="inputResponEye">
-        <item>Bagiamana respon mata pasien</item>
-        <item>Tidak ada respon (1)</item>
-        <item>Bereaksi saat rangsang nyeri (2)</item>
-        <item>Beraksi saat diperintah buka mata (3)</item>
-        <item>Mata terbuka normal tanpa rangsangan dan perintah (4)</item>
-    </string-array>
     <string name="title_activity_signup">SignupActivity</string>
+
+    <string-array name="eye_responses">
+        <item>Tidak ada respon mata</item>
+        <item>Bereaksi saat rangsang nyeri</item>
+        <item>Beraksi saat diperintah buka mata</item>
+        <item>Mata terbuka normal tanpa rangsangan dan perintah</item>
+    </string-array>
+    <string-array name="voice_response">
+        <item>Tidak ada respon suara</item>
+        <item>Hanya merintih</item>
+        <item>Berkomunikasi dengan tidak jelas</item>
+        <item>Komunikasi baik, kebingungan</item>
+        <item>Komunikasi lancar</item>
+    </string-array>
+    <string-array name="movement_response">
+        <item>Tidak ada respon gerakan</item>
+        <item>Hanya dapat menggerakan jari tangan dan kaki</item>
+        <item>Hanya menekuk lengan dan memutar bahu</item>
+        <item>Dapat menggerakkan tubuh menjauhi sumber nyeri</item>
+        <item>Dapat menunjukan lokasi nyeri</item>
+        <item>Bergerak normal</item>
+    </string-array>
 </resources>

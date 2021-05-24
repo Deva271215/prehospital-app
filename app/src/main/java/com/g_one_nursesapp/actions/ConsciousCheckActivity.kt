@@ -1,82 +1,98 @@
 package com.g_one_nursesapp.actions
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import com.g_one_nursesapp.ChatFieldActivity
 import com.g_one_nursesapp.R
+import com.g_one_nursesapp.entity.MessageEntity
+import com.g_one_nursesapp.viewmodels.ConsciousCheckViewModel
 import kotlinx.android.synthetic.main.activity_conscious_check.*
 import kotlinx.android.synthetic.main.activity_tensi_check.*
 import kotlinx.android.synthetic.main.fragment_check_conscious.*
 import kotlinx.android.synthetic.main.fragment_check_conscious.inputEyeRespon
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class ConsciousCheckActivity : AppCompatActivity() {
+    private var eyeResponseNum: Int = 0
+    private var voiceResponseNum: Int = 0
+    private var movementResponseNum: Int = 0
+    private var resultCount: Int = 0
+
+    private lateinit var consciousCheckViewModel: ConsciousCheckViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_conscious_check)
 
+        consciousCheckViewModel = ViewModelProvider(this).get(ConsciousCheckViewModel::class.java)
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Periksa Kesadaran"
 
-        val spListEye = listOf("Respon Mata", "Tidak ada respon mata (1)", "Bereaksi saat rangsang nyeri (2)", "Beraksi saat diperintah buka mata (3)", "Mata terbuka normal tanpa rangsangan dan perintah (4)")
-        val adapterEye = ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spListEye)
+        val spListEyeResponses = resources.getStringArray(R.array.eye_responses)
+        val adapterEye = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, spListEyeResponses)
         inputEyeRespon.adapter = adapterEye
         inputEyeRespon.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                Toast.makeText(
-                        this@ConsciousCheckActivity,
-                        "You Selected ${adapterView?.getItemAtPosition(position).toString()}",
-                        Toast.LENGTH_LONG).show()
+                eyeResponseNum = position + 1
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
 
-        val spListVoice = listOf("Respon Suara", "Tidak ada respon suara (1)", "Bereaksi saat rangsang nyeri (2)", "Beraksi saat diperintah buka mata (3)", "Mata terbuka normal tanpa rangsangan dan perintah (4)")
+        val spListVoice = resources.getStringArray(R.array.voice_response)
         val adapterVoice = ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spListVoice)
         inputVoiceRespon.adapter = adapterVoice
         inputVoiceRespon.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                Toast.makeText(
-                        this@ConsciousCheckActivity,
-                        "You Selected ${adapterView?.getItemAtPosition(position).toString()}",
-                        Toast.LENGTH_LONG).show()
+                voiceResponseNum = position + 1
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
-        val spListMove = listOf("Respon Gerakan", "Tidak ada respon gerakan (1)", "Bereaksi saat rangsang nyeri (2)", "Beraksi saat diperintah buka mata (3)", "Mata terbuka normal tanpa rangsangan dan perintah (4)")
+        val spListMove = resources.getStringArray(R.array.movement_response)
         val adapterMove = ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spListMove)
         inputMoveRespon.adapter = adapterMove
         inputMoveRespon.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                Toast.makeText(
-                        this@ConsciousCheckActivity,
-                        "You Selected ${adapterView?.getItemAtPosition(position).toString()}",
-                        Toast.LENGTH_LONG).show()
+                movementResponseNum = position + 1
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
-//        setButtonSubmit()
-    }
+        val buttonSubmit = findViewById<TextView>(R.id.button_submite)
+        buttonSubmit.setOnClickListener {
+            resultCount = eyeResponseNum + voiceResponseNum + movementResponseNum
 
-//    private fun setButtonSubmit(){
-//        button_submite.setOnClickListener {
-//            Toast.makeText(this@ConsciousCheckActivity, "Value Submited", Toast.LENGTH_LONG).show()
-//        }
-//    }
+            // Create message
+            val message = MessageEntity(
+                    id = UUID.randomUUID().toString(),
+                    message = "Periksa kesadaran",
+                    result = "$resultCount poin",
+                    action = null,
+                    condition = null,
+                    response = null,
+                    time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")).toString()
+            )
+            consciousCheckViewModel.insertOneMessage(message)
+
+            val intent = Intent(this, ChatFieldActivity::class.java)
+            startActivity(intent)
+        }
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()

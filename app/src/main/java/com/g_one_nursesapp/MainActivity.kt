@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        mainViewModel.deleteMessages()
 
         toolbar.setNavigationOnClickListener{
             val intent = Intent(this, ProfileActivity::class.java)
