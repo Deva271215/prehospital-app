@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.g_one_nursesapp.adapters.ChatFieldAdapter
 import com.g_one_nursesapp.entity.AttachmentEntity
 import com.g_one_nursesapp.entity.MessageEntity
+import com.g_one_nursesapp.preference.UserPreference
 import com.g_one_nursesapp.viewmodels.ChatFieldViewModel
 import com.g_one_nursesapp.viewmodels.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -36,12 +37,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomSheetDialog: BottomSheetDialog
 
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var preference: UserPreference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(toolbar)
+
+        preference = UserPreference(applicationContext)
+        preference.setSelectedHospital(false)
 
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         mainViewModel.deleteMessages()

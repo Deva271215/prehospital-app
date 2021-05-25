@@ -11,10 +11,12 @@ internal class UserPreference(context: Context) {
         private const val USER = "user"
         private const val ACCESS_TOKEN = "access_token"
         private const val IS_LOGGED_IN = "is_logged_in"
+        private const val IS_HOSPITAL_SELECTED = "is_hospital_selected"
     }
 
     private val preferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
 
+    // User login
     fun setLoginData(value: LoginData) {
         val e = preferences.edit()
         val gson = Gson()
@@ -24,11 +26,6 @@ internal class UserPreference(context: Context) {
             putBoolean(IS_LOGGED_IN, true)
         }.apply()
     }
-
-    fun getIsLoggedIn(): Boolean {
-        return preferences.getBoolean(IS_LOGGED_IN, false)
-    }
-
     fun getLoginData(): LoginData {
         val gson = Gson()
         val json = gson.fromJson(preferences.getString(USER, ""), UserResponse::class.java)
@@ -37,4 +34,11 @@ internal class UserPreference(context: Context) {
 
         return m
     }
+
+    // Hospital
+    fun setSelectedHospital(value: Boolean) {
+        val e = preferences.edit()
+        e.apply{ putBoolean(IS_HOSPITAL_SELECTED, value)}.apply()
+    }
+    fun getSelectedHospital(): Boolean = preferences.getBoolean(IS_HOSPITAL_SELECTED, false)
 }

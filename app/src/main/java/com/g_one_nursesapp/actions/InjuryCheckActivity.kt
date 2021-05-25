@@ -3,12 +3,14 @@ package com.g_one_nursesapp.actions
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.g_one_nursesapp.ChatFieldActivity
 import com.g_one_nursesapp.databinding.ActivityInjuryCheckBinding
 import com.g_one_nursesapp.entity.MessageEntity
 import com.g_one_nursesapp.faskes.RecomendFaskesActivity
+import com.g_one_nursesapp.preference.UserPreference
 import com.g_one_nursesapp.viewmodels.InjuryCheckViewModel
 import kotlinx.android.synthetic.main.activity_injury_check.*
 import java.time.LocalDateTime
@@ -19,6 +21,7 @@ import kotlin.collections.ArrayList
 class InjuryCheckActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInjuryCheckBinding
     private lateinit var injuryCheckViewModel: InjuryCheckViewModel
+    private lateinit var preference: UserPreference
 
     private val injuriesList = ArrayList<Int>()
     private lateinit var injuriesString: String
@@ -27,6 +30,9 @@ class InjuryCheckActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityInjuryCheckBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        preference = UserPreference(applicationContext)
+        Log.d("Is hospital selected", preference.getSelectedHospital().toString())
 
         injuryCheckViewModel = ViewModelProvider(this).get(InjuryCheckViewModel::class.java)
 
@@ -96,8 +102,13 @@ class InjuryCheckActivity : AppCompatActivity() {
             )
             injuryCheckViewModel.insertOneMessage(message)
 
-            val intent = Intent(this, RecomendFaskesActivity::class.java)
-            startActivity(intent)
+            if(preference.getSelectedHospital()) {
+                val intent = Intent(this, ChatFieldActivity::class.java)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, RecomendFaskesActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 }
