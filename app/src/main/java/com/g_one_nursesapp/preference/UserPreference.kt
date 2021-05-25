@@ -56,7 +56,7 @@ internal class UserPreference(context: Context) {
     // Chat
     fun setActiveChat(value: ChatResponse) {
         val e = preferences.edit()
-        e.apply{ putString(ACTIVE_CHAT, value.toString()) }
+        e.apply{ putString(ACTIVE_CHAT, value.toString()) }.apply()
     }
     fun getActiveChat(): String? = preferences.getString(ACTIVE_CHAT, "")
 }
