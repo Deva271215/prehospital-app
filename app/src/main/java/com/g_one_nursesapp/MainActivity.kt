@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         preference = UserPreference(applicationContext)
-        preference.setSelectedHospital(false)
+        preference.setIsHospitalSelected(false)
 
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         mainViewModel.deleteMessages()

@@ -32,7 +32,6 @@ class InjuryCheckActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         preference = UserPreference(applicationContext)
-        Log.d("Is hospital selected", preference.getSelectedHospital().toString())
 
         injuryCheckViewModel = ViewModelProvider(this).get(InjuryCheckViewModel::class.java)
 
@@ -102,7 +101,7 @@ class InjuryCheckActivity : AppCompatActivity() {
             )
             injuryCheckViewModel.insertOneMessage(message)
 
-            if(preference.getSelectedHospital()) {
+            if(preference.getIsHospitalSelected()) {
                 val intent = Intent(this, ChatFieldActivity::class.java)
                 startActivity(intent)
             } else {

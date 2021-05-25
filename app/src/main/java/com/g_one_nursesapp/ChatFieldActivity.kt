@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -17,10 +18,17 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.g_one_nursesapp.adapters.ChatFieldAdapter
+import com.g_one_nursesapp.api.response.ChatResponse
+import com.g_one_nursesapp.api.response.HospitalsResponse
+import com.g_one_nursesapp.api.socket.InitChatPayload
 import com.g_one_nursesapp.entity.AttachmentEntity
 import com.g_one_nursesapp.entity.MessageEntity
+import com.g_one_nursesapp.preference.UserPreference
+import com.g_one_nursesapp.utility.SocketIOInstance
 import com.g_one_nursesapp.viewmodels.ChatFieldViewModel
+import com.github.nkzawa.socketio.client.Ack
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_chat_field.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.toolbar
@@ -31,8 +39,18 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ChatFieldActivity : AppCompatActivity() {
+    companion object {
+        const val IS_HOSPITAL_SELECTED = "IS_HOSPITAL_SELECTED"
+        const val SELECTED_HOSPITAL = "SELECTED_HOSPITAL"
+    }
+
     private lateinit var chatFieldViewModel: ChatFieldViewModel
     private lateinit var chatFieldAdapter: ChatFieldAdapter
+    private lateinit var preference: UserPreference
+
+    private var gson = Gson()
+
+    private val socketIOInstance = SocketIOInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +58,37 @@ class ChatFieldActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
+        preference = UserPreference(applicationContext)
+
         chatFieldAdapter = ChatFieldAdapter()
         rvChatField.layoutManager = LinearLayoutManager(applicationContext)
         rvChatField.adapter = chatFieldAdapter
 
         chatFieldViewModel = ViewModelProvider(this).get(ChatFieldViewModel::class.java)
+
+        // Get data from intent
+        val isHospitalSelected = intent.getBooleanExtra(IS_HOSPITAL_SELECTED, false)
+        val selectedHospital = gson.fromJson(intent.getStringExtra(SELECTED_HOSPITAL), HospitalsResponse::class.java)
+        if (isHospitalSelected) {
+            // Set selected hospital to shared preferences
+            preference.setIsHospitalSelected(isHospitalSelected)
+            preference.setSelectedHospital(selectedHospital)
+
+            // Connect to socket
+            socketIOInstance.connectToSocketServer()
+            socketIOInstance.getSocket()?.connect()
+
+            // Emit init_chat event to server via socket
+            val initChatPayload = InitChatPayload(preference.getLoginData().user!!, selectedHospital)
+            socketIOInstance.getSocket()?.emit("init_chat", gson.toJson(initChatPayload), object: Ack {
+                override fun call(vararg args: Any?) {
+                    // Set currently active chat to shared preferences
+                    val createdChat = args[0]
+                    val json = gson.fromJson<ChatResponse>("""$createdChat""", ChatResponse::class.java)
+                    preference.setActiveChat(json)
+                }
+            })
+        }
 
         toolbar.setNavigationOnClickListener{
 
@@ -117,5 +161,10 @@ class ChatFieldActivity : AppCompatActivity() {
             val intent = Intent(this, ListActionsActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        socketIOInstance.getSocket()?.disconnect()
     }
 }
