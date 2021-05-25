@@ -94,10 +94,6 @@ class InjuryCheckActivity : AppCompatActivity() {
                     id = UUID.randomUUID().toString(),
                     message = "Periksa Cidera",
                     result = injuriesString,
-                    condition = null,
-                    response = null,
-                    action = null,
-                    time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")).toString()
             )
             injuryCheckViewModel.insertOneMessage(message)
 

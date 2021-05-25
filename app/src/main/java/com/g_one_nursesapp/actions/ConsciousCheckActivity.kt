@@ -82,10 +82,6 @@ class ConsciousCheckActivity : AppCompatActivity() {
                     id = UUID.randomUUID().toString(),
                     message = "Periksa kesadaran",
                     result = "$resultCount poin",
-                    action = null,
-                    condition = null,
-                    response = null,
-                    time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")).toString()
             )
             consciousCheckViewModel.insertOneMessage(message)
 

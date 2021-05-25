@@ -81,10 +81,8 @@ class RespirationsCheckActivity : AppCompatActivity() {
                 id = UUID.randomUUID().toString(),
                 message = "Periksa pernafasan",
                 result = checkResult,
-                condition = null,
                 response = patientResponse,
                 action = givenAction,
-                time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")).toString(),
             )
             respirationCheckViewModel.insertOneMessage(message)
 
