@@ -8,7 +8,7 @@
     android:layout_margin="5dp">
 
     <TextView
-        android:id="@+id/actionName"
+        android:id="@+id/tv_hospital"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -23,13 +23,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tv_hospital_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
         android:fontFamily="@font/opensansreguler"
         android:textSize="15sp"
         android:text="@string/value_distance"
-        app:layout_constraintBottom_toBottomOf="@+id/actionName"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_hospital"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
