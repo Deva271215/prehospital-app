@@ -4,20 +4,31 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.g_one_nursesapp.ChatFieldActivity
 import com.g_one_nursesapp.databinding.ActivityInjuryCheckBinding
+import com.g_one_nursesapp.entity.MessageEntity
 import com.g_one_nursesapp.faskes.RecomendFaskesActivity
+import com.g_one_nursesapp.viewmodels.InjuryCheckViewModel
 import kotlinx.android.synthetic.main.activity_injury_check.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 import kotlin.collections.ArrayList
 
 class InjuryCheckActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInjuryCheckBinding
+    private lateinit var injuryCheckViewModel: InjuryCheckViewModel
 
     private val injuriesList = ArrayList<Int>()
+    private lateinit var injuriesString: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityInjuryCheckBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        injuryCheckViewModel = ViewModelProvider(this).get(InjuryCheckViewModel::class.java)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Periksa Cidera"
@@ -65,6 +76,7 @@ class InjuryCheckActivity : AppCompatActivity() {
                 for (injury in injuriesList) {
                     items.add(injuries[injury])
                 }
+                injuriesString = items.joinToString { "$it" }
                 selectInjuriesInput.setText(items.joinToString { "$it" })
             }
             builder.show()
@@ -73,6 +85,17 @@ class InjuryCheckActivity : AppCompatActivity() {
 
     private fun onSubmitButtonClicked() {
         button_submite.setOnClickListener {
+            val message = MessageEntity(
+                    id = UUID.randomUUID().toString(),
+                    message = "Periksa Cidera",
+                    result = injuriesString,
+                    condition = null,
+                    response = null,
+                    action = null,
+                    time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")).toString()
+            )
+            injuryCheckViewModel.insertOneMessage(message)
+
             val intent = Intent(this, RecomendFaskesActivity::class.java)
             startActivity(intent)
         }

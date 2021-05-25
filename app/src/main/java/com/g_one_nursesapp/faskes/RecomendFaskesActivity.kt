@@ -1,7 +1,9 @@
 package com.g_one_nursesapp.faskes
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.g_one_nursesapp.ChatFieldActivity
 import com.g_one_nursesapp.R
 
 class RecomendFaskesActivity : AppCompatActivity() {
@@ -16,5 +18,10 @@ class RecomendFaskesActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(this, ChatFieldActivity::class.java)
+        startActivity(intent)
     }
 }
