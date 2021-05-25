@@ -1,9 +1,11 @@
 package com.g_one_nursesapp.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.g_one_nursesapp.ChatFieldActivity
 import com.g_one_nursesapp.R
 import com.g_one_nursesapp.api.response.HospitalsResponse
 import kotlinx.android.synthetic.main.rcm_faskes.view.*
@@ -21,17 +23,18 @@ class RecomendFaskesAdapter: RecyclerView.Adapter<RecomendFaskesAdapter.ViewHold
             with(itemView) {
                 tv_hospital.text = item.name
                 tv_hospital_distance.text = "15 km"
+
+                setOnClickListener {
+                    val intent = Intent(itemView.context, ChatFieldActivity::class.java)
+                    itemView.context.startActivity(intent)
+                }
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.rcm_faskes, parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.rcm_faskes, parent, false))
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(hospitals[position])
-    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(hospitals[position])
 
     override fun getItemCount(): Int = hospitals.size
 }
