@@ -125,11 +125,6 @@ class MainActivity : AppCompatActivity() {
             val message = MessageEntity(
                 id = messageId,
                 message = "Posisi awal",
-                result = null,
-                condition = null,
-                response = null,
-                action = null,
-                time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")).toString(),
             )
             mainViewModel.insertOneMessage(message)
 
