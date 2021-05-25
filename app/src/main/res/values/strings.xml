@@ -94,6 +94,8 @@
 
     <string name="hello_world">Hello Square World!</string>
     <string name="title_activity_signup">SignupActivity</string>
+    <string name="prompt_injury">Pilih cidera</string>
+    <string name="prompt_injury_optional">Cidera tambahan (opsional)</string>
 
     <string-array name="eye_responses">
         <item>Tidak ada respon mata</item>
