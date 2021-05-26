@@ -10,7 +10,8 @@ import com.g_one_nursesapp.R
 import com.g_one_nursesapp.api.RetrofitClient
 import com.g_one_nursesapp.api.response.LoginData
 import com.g_one_nursesapp.api.response.LoginResponse
-import com.g_one_nursesapp.auth.data.storage.SharedPrefManager
+import com.g_one_nursesapp.auth.signup.SignupActivity
+import com.g_one_nursesapp.databinding.ActivityLoginBinding
 import com.g_one_nursesapp.entity.UserEntity
 import com.g_one_nursesapp.preference.UserPreference
 import kotlinx.android.synthetic.main.activity_login.*
@@ -21,10 +22,12 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var preference: UserPreference
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         preference = UserPreference(applicationContext)
 
@@ -63,6 +66,15 @@ class LoginActivity : AppCompatActivity() {
                         }
 
                     })
+        }
+
+        onSignInButtonClicked()
+    }
+
+    private fun onSignInButtonClicked() {
+        binding.btnToSignIn.setOnClickListener {
+            val intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
         }
     }
 }

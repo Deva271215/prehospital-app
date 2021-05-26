@@ -1,14 +1,11 @@
 package com.g_one_nursesapp.entity
 
-data class UserEntity(
+import com.g_one_nursesapp.api.response.HospitalsResponse
 
-    val id: String? = "",
+data class UserEntity(
+    val accountType: String? = "NURSE",
     val email: String? = "",
     val groupName: String? = "",
     val noHp: String? ="",
     val password: String? = "",
-    val isDeleted: Boolean? = false,
-    val createdAt: String? = "",
-    val updatedAt: String? = "",
-
-    )
+)
