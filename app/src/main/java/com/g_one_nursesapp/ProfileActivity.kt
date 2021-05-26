@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.g_one_nursesapp.auth.data.storage.SharedPrefManager
-import com.g_one_nursesapp.auth.login.LoginActivity
 
 class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
