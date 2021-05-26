@@ -42,6 +42,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
         app:cardCornerRadius="8dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_chat">
@@ -59,11 +60,13 @@
         android:id="@+id/text_hasil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/text_hasil"
-        app:layout_constraintStart_toStartOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/value_hasil"
@@ -71,6 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:text="@string/value_hasil"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/text_hasil"
         app:layout_constraintStart_toEndOf="@+id/text_hasil" />
 
@@ -79,6 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_respon"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/text_hasil"
         app:layout_constraintTop_toBottomOf="@+id/text_hasil" />
 
@@ -88,6 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:text="@string/value_respon"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/text_respon"
         app:layout_constraintStart_toEndOf="@+id/text_respon" />
 
@@ -96,6 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_kondisi"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/text_respon"
         app:layout_constraintTop_toBottomOf="@+id/text_respon" />
 
@@ -105,7 +112,27 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:text="@string/value_kondisi"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/text_kondisi"
         app:layout_constraintStart_toEndOf="@+id/text_kondisi" />
+
+    <TextView
+        android:id="@+id/text_aksi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_aksi"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/text_kondisi"
+        app:layout_constraintTop_toBottomOf="@+id/text_kondisi" />
+
+    <TextView
+        android:id="@+id/value_aksi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/value_aksi"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/text_aksi"
+        app:layout_constraintStart_toEndOf="@+id/text_aksi" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

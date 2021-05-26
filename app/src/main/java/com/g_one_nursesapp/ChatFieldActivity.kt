@@ -1,35 +1,112 @@
 package com.g_one_nursesapp
 
-import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Toast
-import androidx.core.content.FileProvider
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.g_one_nursesapp.adapters.ChatFieldAdapter
+import com.g_one_nursesapp.api.response.ChatResponse
+import com.g_one_nursesapp.api.response.HospitalsResponse
+import com.g_one_nursesapp.api.socket.InitChatPayload
+import com.g_one_nursesapp.api.socket.SendBulkMessagesPayload
+import com.g_one_nursesapp.preference.UserPreference
+import com.g_one_nursesapp.utility.SocketIOInstance
+import com.g_one_nursesapp.viewmodels.ChatFieldViewModel
+import com.github.nkzawa.socketio.client.Ack
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_chat_field.*
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.toolbar
-import java.io.File
-
-private const val FILE_NAME = "photo.jpg"
-private const val REQUEST_CODE = 42
-private lateinit var photoFile: File
+import java.util.*
 
 class ChatFieldActivity : AppCompatActivity() {
+    companion object {
+        const val IS_HOSPITAL_SELECTED = "IS_HOSPITAL_SELECTED"
+        const val SELECTED_HOSPITAL = "SELECTED_HOSPITAL"
+    }
+
+    private lateinit var chatFieldViewModel: ChatFieldViewModel
+    private lateinit var chatFieldAdapter: ChatFieldAdapter
+    private lateinit var preference: UserPreference
+    private lateinit var createdChat: ChatResponse
+
+    private var gson = Gson()
+    private var messageResults = ArrayList<SendBulkMessagesPayload>()
+
+    private val socketIOInstance = SocketIOInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_field)
 
         setSupportActionBar(toolbar)
+
+        preference = UserPreference(applicationContext)
+
+        chatFieldAdapter = ChatFieldAdapter()
+        rvChatField.layoutManager = LinearLayoutManager(applicationContext)
+        rvChatField.adapter = chatFieldAdapter
+
+        chatFieldViewModel = ViewModelProvider(this).get(ChatFieldViewModel::class.java)
+
+        // Get all messages
+        // Send all local messages to remote
+        chatFieldViewModel.fetchMessages.observe(this@ChatFieldActivity, {
+            messageResults = ArrayList<SendBulkMessagesPayload>()
+            for (item in it) {
+                val message = SendBulkMessagesPayload(
+                        message = item.message.message,
+                        creationTime = item.message.creationTime!!,
+                        result = item.message.result,
+                        response = item.message.response,
+                        condition = item.message.condition,
+                        action = item.message.action,
+                )
+                messageResults.add(message)
+            }
+        })
+
+        // Get data from intent
+        val isHospitalSelected = intent.getBooleanExtra(IS_HOSPITAL_SELECTED, false)
+        val selectedHospital = gson.fromJson(intent.getStringExtra(SELECTED_HOSPITAL), HospitalsResponse::class.java)
+        if (isHospitalSelected) {
+            // Set selected hospital to shared preferences
+            preference.setIsHospitalSelected(isHospitalSelected)
+            preference.setSelectedHospital(selectedHospital)
+
+            // Connect to socket
+            socketIOInstance.connectToSocketServer()
+            socketIOInstance.getSocket()?.connect()
+
+            // Emit init_chat event to server via socket
+            val initChatPayload = InitChatPayload(preference.getLoginData().user!!, selectedHospital)
+            socketIOInstance.getSocket()?.emit("init_chat", gson.toJson(initChatPayload), object: Ack {
+                override fun call(vararg args: Any?) {
+                    // Set currently active chat to shared preferences
+                    val newChat = args[0]
+                    val json = gson.fromJson("""$newChat""", ChatResponse::class.java)
+                    preference.setActiveChat(json)
+                    createdChat = json
+
+                    // Append chat in messageResults variable
+                    val tempResult = ArrayList<SendBulkMessagesPayload>()
+                    for (m in messageResults) {
+                        m.chat = json
+                        tempResult.add(m)
+                    }
+
+                    // Emit event to socket server
+                    socketIOInstance.getSocket()?.emit("join_chat", json.id)
+                    socketIOInstance.getSocket()?.emit("send_bulk_messages", gson.toJson(tempResult))
+                }
+            })
+        }
 
         toolbar.setNavigationOnClickListener{
 
@@ -44,6 +121,7 @@ class ChatFieldActivity : AppCompatActivity() {
 
             bottomSheetViewAlertBack.findViewById<View>(R.id.button_yakin).setOnClickListener{
                 onBackPressed()
+                chatFieldViewModel.deleteMessages()
                 bottomSheetDialogAlertBack.dismiss()
             }
 
@@ -51,8 +129,16 @@ class ChatFieldActivity : AppCompatActivity() {
             bottomSheetDialogAlertBack.show()
         }
 
-        setBottomSheetStart()
+        chatFieldViewModel.fetchMessages.observe(this, {
+            chatFieldAdapter.setMessage(it)
+        })
+
         setButtonTindakan()
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -88,34 +174,6 @@ class ChatFieldActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setBottomSheetStart(){
-        val bottomSheetDialog = BottomSheetDialog(
-                this@ChatFieldActivity, R.style.BottomSheetFragmentTheme
-        )
-
-        val bottomSheetView = LayoutInflater.from(applicationContext).inflate(
-                R.layout.fragment_open_cam,
-                findViewById<LinearLayout>(R.id.openCamFragment)
-        )
-
-        bottomSheetView.findViewById<View>(R.id.button_openCam).setOnClickListener{
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            photoFile = getPhotoFile(FILE_NAME)
-
-            val fileProvider = FileProvider.getUriForFile(this, "com.g_one_nursesapp.fileprovider", photoFile)
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
-            if(takePictureIntent.resolveActivity(this.packageManager) != null){
-                startActivityForResult(takePictureIntent, REQUEST_CODE)
-                bottomSheetDialog.dismiss()
-            }else{
-                Toast.makeText(this@ChatFieldActivity, "Can't Open Camera", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        bottomSheetDialog.setContentView(bottomSheetView)
-        bottomSheetDialog.show()
-    }
-
     private fun setButtonTindakan(){
         btnTindakan.setOnClickListener{
             val intent = Intent(this, ListActionsActivity::class.java)
@@ -123,18 +181,8 @@ class ChatFieldActivity : AppCompatActivity() {
         }
     }
 
-    private fun getPhotoFile(fileName: String): File{
-        val storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(fileName, ".jpg", storageDirectory)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
-            val takenImage = BitmapFactory.decodeFile(photoFile.absolutePath)
-            docImage.setImageBitmap(takenImage)
-        }else{
-            super.onActivityResult(requestCode, resultCode, data)
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        socketIOInstance.getSocket()?.disconnect()
     }
 }
