@@ -1,30 +1,20 @@
 package com.g_one_nursesapp
 
-import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Toast
-import androidx.core.content.FileProvider
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.g_one_nursesapp.adapters.ChatFieldAdapter
 import com.g_one_nursesapp.api.response.ChatResponse
 import com.g_one_nursesapp.api.response.HospitalsResponse
 import com.g_one_nursesapp.api.socket.InitChatPayload
 import com.g_one_nursesapp.api.socket.SendBulkMessagesPayload
-import com.g_one_nursesapp.entity.AttachmentEntity
-import com.g_one_nursesapp.entity.MessageEntity
 import com.g_one_nursesapp.preference.UserPreference
 import com.g_one_nursesapp.utility.SocketIOInstance
 import com.g_one_nursesapp.viewmodels.ChatFieldViewModel
@@ -32,17 +22,8 @@ import com.github.nkzawa.socketio.client.Ack
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_chat_field.*
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.toolbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.File
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.concurrent.schedule
 
 class ChatFieldActivity : AppCompatActivity() {
     companion object {
@@ -119,6 +100,9 @@ class ChatFieldActivity : AppCompatActivity() {
                         m.chat = json
                         tempResult.add(m)
                     }
+
+                    // Emit event to socket server
+                    socketIOInstance.getSocket()?.emit("join_chat", json.id)
                     socketIOInstance.getSocket()?.emit("send_bulk_messages", gson.toJson(tempResult))
                 }
             })
