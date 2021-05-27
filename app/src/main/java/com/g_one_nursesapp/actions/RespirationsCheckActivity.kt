@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.g_one_nursesapp.ChatFieldActivity
@@ -41,7 +42,11 @@ class RespirationsCheckActivity : AppCompatActivity() {
         inputCheckResp.adapter = adapterRespiration
         inputCheckResp.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                checkResult = adapterView?.getItemAtPosition(position).toString()
+                checkResult = if (position == 0) {
+                    ""
+                } else {
+                    adapterView?.getItemAtPosition(position).toString()
+                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -54,7 +59,9 @@ class RespirationsCheckActivity : AppCompatActivity() {
         inputRespAssis.adapter = adapterResp
         inputRespAssis.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                givenAction = adapterView?.getItemAtPosition(position).toString()
+                givenAction = if (position == 0) { "" } else {
+                    adapterView?.getItemAtPosition(position).toString()
+                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -67,7 +74,9 @@ class RespirationsCheckActivity : AppCompatActivity() {
         inputRespon.adapter = adapterRespon
         inputRespon.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                patientResponse = adapterView?.getItemAtPosition(position).toString()
+                patientResponse = if (position == 0) { "" } else {
+                    adapterView?.getItemAtPosition(position).toString()
+                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -77,17 +86,30 @@ class RespirationsCheckActivity : AppCompatActivity() {
 
         val buttonSubmit = findViewById<TextView>(R.id.button_submite)
         buttonSubmit.setOnClickListener {
-            val message = MessageEntity(
-                id = UUID.randomUUID().toString(),
-                message = "Periksa pernafasan",
-                result = checkResult,
-                response = patientResponse,
-                action = givenAction,
-            )
-            respirationCheckViewModel.insertOneMessage(message)
+            when {
+                checkResult.isEmpty() -> {
+                    Toast.makeText(this, "Silahkan masukkan hasil pemeriksaan yang tepat", Toast.LENGTH_LONG).show()
+                }
+                givenAction.isEmpty() -> {
+                    Toast.makeText(this, "Silahkan masukkan tindakan yang tepat", Toast.LENGTH_LONG).show()
+                }
+                patientResponse.isEmpty() -> {
+                    Toast.makeText(this, "Silahkan masukkan respon yang tepat", Toast.LENGTH_LONG).show()
+                }
+                else -> {
+                    val message = MessageEntity(
+                        id = UUID.randomUUID().toString(),
+                        message = "Periksa pernafasan",
+                        result = checkResult,
+                        response = patientResponse,
+                        action = givenAction,
+                    )
+                    respirationCheckViewModel.insertOneMessage(message)
 
-            val intent = Intent(this, ChatFieldActivity::class.java)
-            startActivity(intent)
+                    val intent = Intent(this, ChatFieldActivity::class.java)
+                    startActivity(intent)
+                }
+            }
         }
     }
 

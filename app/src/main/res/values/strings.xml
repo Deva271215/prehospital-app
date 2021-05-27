@@ -22,10 +22,10 @@
     <string name="title_card">Pertolongan Pertama</string>
     <string name="gambar_pertolongan">Gambar Pertolongan Pertama</string>
 
-    <string name="text_hasil">Hasil :</string>
-    <string name="text_kondisi">Kondisi :</string>
-    <string name="text_respon">Respon :</string>
-    <string name="text_aksi">Aksi :</string>
+    <string name="text_hasil">Hasil</string>
+    <string name="text_kondisi">Kondisi</string>
+    <string name="text_respon">Respon</string>
+    <string name="text_aksi">Aksi</string>
     <string name="text_respon_input">Respon pasien</string>
     <string name="text_kondisi_input">Kondisi pasien</string>
 

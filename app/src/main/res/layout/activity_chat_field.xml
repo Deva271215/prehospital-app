@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,41 +11,32 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:background="@color/red"
+        android:gravity="center_vertical"
+        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
         app:navigationIcon="@drawable/ic_back_white"
         app:title="@string/title_activity_chat_field"
-        app:titleTextColor="@color/white"
-        />
+        app:titleTextColor="@color/white" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvChatField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            tools:listitem="@layout/chat_list" />
-
-    <TextView
-        android:id="@+id/btnTindakan"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvChatField"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/rounded_botton_noedge"
-        android:fontFamily="@font/opensansbold"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginTop="60dp"
+        tools:listitem="@layout/chat_list" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btnTindakan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="8dp"
         android:text="@string/pilih_tindakan"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:icon="@drawable/ic_add_plus"/>
 
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
