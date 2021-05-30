@@ -125,16 +125,9 @@ class MainActivity : AppCompatActivity() {
             val message = MessageEntity(
                 id = messageId,
                 message = "Posisi awal",
+                attachments = photoFile.absolutePath
             )
             mainViewModel.insertOneMessage(message)
-
-            // Create attachment
-            val attachment = AttachmentEntity(
-                id = UUID.randomUUID().toString(),
-                source = photoFile.absolutePath,
-                messageId = messageId
-            )
-            mainViewModel.insertOneAttachment(attachment)
 
             val intent = Intent(this, ChatFieldActivity::class.java)
             startActivity(intent)

@@ -61,12 +61,12 @@ class ChatFieldActivity : AppCompatActivity() {
             messageResults = ArrayList<SendBulkMessagesPayload>()
             for (item in it) {
                 val message = SendBulkMessagesPayload(
-                        message = item.message.message,
-                        creationTime = item.message.creationTime!!,
-                        result = item.message.result,
-                        response = item.message.response,
-                        condition = item.message.condition,
-                        action = item.message.action,
+                        message = item.message,
+                        creationTime = item.creationTime!!,
+                        result = item.result,
+                        response = item.response,
+                        condition = item.condition,
+                        action = item.action,
                 )
                 messageResults.add(message)
             }

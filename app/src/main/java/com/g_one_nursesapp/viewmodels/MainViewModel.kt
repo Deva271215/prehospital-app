@@ -24,8 +24,4 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     fun deleteMessages() = viewModelScope.launch(Dispatchers.IO) {
         appRepository.deleteMessages()
     }
-
-    fun insertOneAttachment(attachment: AttachmentEntity) = viewModelScope.launch(Dispatchers.IO) {
-        appRepository.insertOneAttachment(attachment)
-    }
 }

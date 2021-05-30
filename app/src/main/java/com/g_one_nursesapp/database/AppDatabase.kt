@@ -8,7 +8,7 @@ import com.g_one_nursesapp.entity.AttachmentEntity
 import com.g_one_nursesapp.entity.MessageEntity
 
 @Database(
-    entities = [MessageEntity::class, AttachmentEntity::class],
+    entities = [MessageEntity::class],
     version = 1,
     exportSchema = false
 )

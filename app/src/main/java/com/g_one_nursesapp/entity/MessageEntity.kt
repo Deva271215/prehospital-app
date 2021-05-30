@@ -40,6 +40,10 @@ class MessageEntity(
     @field:SerializedName("action")
     val action: String? = null,
 
+    @ColumnInfo
+    @Nullable
+    val attachments: String? = "",
+
     @ColumnInfo(name = "creation_time")
     @field:SerializedName("creation_time")
     val creationTime: String? = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")),
