@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.g_one_nursesapp.database.AppDatabase
 import com.g_one_nursesapp.database.AppRepository
-import com.g_one_nursesapp.entity.AttachmentEntity
 import com.g_one_nursesapp.entity.MessageEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

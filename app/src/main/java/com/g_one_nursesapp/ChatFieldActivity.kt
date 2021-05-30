@@ -55,8 +55,7 @@ class ChatFieldActivity : AppCompatActivity() {
 
         chatFieldViewModel = ViewModelProvider(this).get(ChatFieldViewModel::class.java)
 
-        // Get all messages
-        // Send all local messages to remote
+        // Get all messages from room database
         chatFieldViewModel.fetchMessages.observe(this@ChatFieldActivity, {
             messageResults = ArrayList<SendBulkMessagesPayload>()
             for (item in it) {
@@ -67,6 +66,7 @@ class ChatFieldActivity : AppCompatActivity() {
                         response = item.response,
                         condition = item.condition,
                         action = item.action,
+                        attachments = item.attachments
                 )
                 messageResults.add(message)
             }
@@ -82,7 +82,9 @@ class ChatFieldActivity : AppCompatActivity() {
 
             // Connect to socket
             socketIOInstance.connectToSocketServer()
-            socketIOInstance.getSocket()?.connect()
+            if (!socketIOInstance.getSocket()?.connected()!!) {
+                socketIOInstance.getSocket()?.connect()
+            }
 
             // Emit init_chat event to server via socket
             val initChatPayload = InitChatPayload(preference.getLoginData().user!!, selectedHospital)
@@ -148,10 +150,8 @@ class ChatFieldActivity : AppCompatActivity() {
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when(item.itemId) {
             R.id.icon_check -> {
-
                 val bottomSheetDone = BottomSheetDialog(
                     this@ChatFieldActivity, R.style.BottomSheetFragmentTheme
                 )
@@ -170,7 +170,6 @@ class ChatFieldActivity : AppCompatActivity() {
                 bottomSheetDone.show()
             }
         }
-
         return super.onOptionsItemSelected(item)
     }
 

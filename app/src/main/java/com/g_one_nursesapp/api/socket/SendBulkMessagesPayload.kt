@@ -24,4 +24,7 @@ data class SendBulkMessagesPayload(
 
     @field:SerializedName("action")
     val action: String? = null,
+
+    @field:SerializedName("attachments")
+    val attachments: String? = null,
 )
