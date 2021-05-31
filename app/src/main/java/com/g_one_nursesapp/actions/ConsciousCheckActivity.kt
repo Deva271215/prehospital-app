@@ -10,9 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.g_one_nursesapp.ChatFieldActivity
 import com.g_one_nursesapp.R
+import com.g_one_nursesapp.api.response.ChatResponse
+import com.g_one_nursesapp.api.response.UserResponse
 import com.g_one_nursesapp.databinding.ActivityConsciousCheckBinding
 import com.g_one_nursesapp.entity.MessageEntity
+import com.g_one_nursesapp.preference.UserPreference
+import com.g_one_nursesapp.utility.SocketIOInstance
 import com.g_one_nursesapp.viewmodels.ConsciousCheckViewModel
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_conscious_check.*
 import java.util.*
 
@@ -23,9 +28,12 @@ class ConsciousCheckActivity : AppCompatActivity() {
     private var resultCount: Int = 0
     private lateinit var consciousCheckViewModel: ConsciousCheckViewModel
     private lateinit var binding: ActivityConsciousCheckBinding
+    private lateinit var preference: UserPreference
+    private val socket = SocketIOInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        preference = UserPreference(applicationContext)
         binding = ActivityConsciousCheckBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -91,6 +99,9 @@ class ConsciousCheckActivity : AppCompatActivity() {
                     )
                     consciousCheckViewModel.insertOneMessage(message)
 
+                    if (preference.getIsHospitalSelected()) {
+                        emitMessageToSocket(message)
+                    }
                     val intent = Intent(this, ChatFieldActivity::class.java)
                     startActivity(intent)
                 }
@@ -101,5 +112,13 @@ class ConsciousCheckActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    private fun emitMessageToSocket(message: MessageEntity) {
+        val activeChat = preference.getActiveChat()
+        message.chat = Gson().fromJson("""$activeChat""", ChatResponse::class.java)
+        socket.initSocket()
+        socket.connectToSocket()
+        socket.getSocket()?.emit("send_message", Gson().toJson(message))
     }
 }
