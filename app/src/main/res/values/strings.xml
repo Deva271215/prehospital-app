@@ -26,11 +26,11 @@
     <string name="text_kondisi">Kondisi</string>
     <string name="text_respon">Respon</string>
     <string name="text_aksi">Aksi</string>
-    <string name="text_respon_input">Respon pasien</string>
-    <string name="text_kondisi_input">Kondisi pasien</string>
+    <string name="text_respon_input">Respon korban</string>
+    <string name="text_kondisi_input">Kondisi korban</string>
 
 
-    <string name="button_send">SIMPAN</string>
+    <string name="button_send">Simpan</string>
 
     <string name="traumaName">Nama Cedera/Penyakit</string>
     <string name="value_hasil">20/80</string>
@@ -62,6 +62,7 @@
     <string name="btn_cekPernafasan">Periksa Pernafasan</string>
     <string name="btn_cekTensi">Cek Tensi</string>
     <string name="btn_pasangInfus">Pemasangan Infus</string>
+    <string name="btn_additional">Catatan Tambahan</string>
     <string name="btn_cekLuka">Periksa Cidera/Luka</string>
     <string name="btn_done">Sudah</string>
     <string name="btn_notyet">Belum</string>
@@ -76,6 +77,8 @@
     <string name="text_cekTensi">Hasil cek tensi akan direkam ke dalam rekam medis</string>
     <string name="text_systole">Masukan Systole</string>
     <string name="text_diastole">Masukan Distole</string>
+    <string name="kondisiKorban">Masukan kondisi korban</string>
+    <string name="text_additionalNote">Masukan kondisi lainnya, seperti penyakit bawaan </string>
     <string name="text_pasangInfus">Waktu pesangan infus akan direkam dalam rekam medis korban</string>
     <string name="text_done">Apakah semua tindakan sudah selesai?</string>
     <string name="text_sub_done">Semua data akan disimpan dan prediksi trauma/penyakit akan ditunjukan</string>
@@ -87,8 +90,8 @@
     <string name="pertama">Pertama!</string>
     <string name="belum_disimpan">Informasi belum disimpan</string>
     <string name="belum_disimpan_isi">Ada informasi yang belum disimpan. Anda yakin ingin keluar?</string>
-    <string name="isi_text_pertama">Foto posisi pasien sebelum dilakukan pertolongan.</string>
-    <string name="foto_posisi">Foto Posisi Awal Pasien di lokasi.</string>
+    <string name="isi_text_pertama">Foto posisi korban sebelum dilakukan pertolongan.</string>
+    <string name="foto_posisi">Foto Posisi Awal korban di lokasi.</string>
     <string name="mulai_foto">Mulai Foto</string>
     <string name="title_activity_chat_field">Live Rekam Medis</string>
     <string name="title_activity_list_actions">Daftar Tindakan</string>
@@ -99,14 +102,14 @@
     <string name="prompt_injury_optional">Cidera tambahan (opsional)</string>
 
     <string-array name="eye_responses">
-        <item>Bagaimana respon mata pasien?</item>
+        <item>Bagaimana respon mata korban?</item>
         <item>Tidak ada respon mata</item>
         <item>Bereaksi saat rangsang nyeri</item>
         <item>Beraksi saat diperintah buka mata</item>
         <item>Mata terbuka normal tanpa rangsangan dan perintah</item>
     </string-array>
     <string-array name="voice_response">
-        <item>Bagaimana respon suara pasien?</item>
+        <item>Bagaimana respon suara korban?</item>
         <item>Tidak ada respon suara</item>
         <item>Hanya merintih</item>
         <item>Berkomunikasi dengan tidak jelas</item>
@@ -114,7 +117,7 @@
         <item>Komunikasi lancar</item>
     </string-array>
     <string-array name="movement_response">
-        <item>Bagaimana respon gerak pasien?</item>
+        <item>Bagaimana respon gerak korban?</item>
         <item>Tidak ada respon gerakan</item>
         <item>Hanya dapat menggerakan jari tangan dan kaki</item>
         <item>Hanya menekuk lengan dan memutar bahu</item>
