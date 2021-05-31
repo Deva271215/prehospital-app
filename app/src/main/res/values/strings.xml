@@ -100,7 +100,30 @@
     <string name="title_activity_signup">SignupActivity</string>
     <string name="prompt_injury">Pilih cidera</string>
     <string name="prompt_injury_optional">Cidera tambahan (opsional)</string>
+    
+    <!-- Respiration check items -->
+    <string-array name="checking_result_items">
+        <item>Hasil Pemeriksaan</item>
+        <item>Tersumbat benda asing/cairan</item>
+        <item>Nafas Tersendat/Tidak Lancar</item>
+        <item>Seluran Nafasan Normal</item>
+    </string-array>
 
+    <string-array name="nurse_actions_items">
+        <item>Bantuan pernafasan yang diberikan</item>
+        <item>Resutasi Jantung Paru (RJP)</item>
+        <item>Pemberian Oksigen</item>
+        <item>Membuka saluran nafas</item>
+        <item>Membuka saluran nafas dan RJP</item>
+    </string-array>
+
+    <string-array name="patient_response_items">
+        <item>Respon pasien setelah bantuan</item>
+        <item>Pernafasan berangsur nomal</item>
+        <item>Pernafasan masih terganggu</item>
+    </string-array>
+
+    <!-- Conscious check items -->
     <string-array name="eye_responses">
         <item>Bagaimana respon mata korban?</item>
         <item>Tidak ada respon mata</item>
@@ -124,5 +147,16 @@
         <item>Dapat menggerakkan tubuh menjauhi sumber nyeri</item>
         <item>Dapat menunjukan lokasi nyeri</item>
         <item>Bergerak normal</item>
+    </string-array>
+
+    <string-array name="injury_items">
+        <item>Patah tulang</item>
+        <item>Luka lecet</item>
+        <item>Pendarahan di kepala</item>
+        <item>Lengan kanan berdarah</item>
+        <item>Lengan kiri berdarah</item>
+        <item>Kaki kanan berdarah</item>
+        <item>Kaki kiri berdarah</item>
+        <item>Punggung terluka</item>
     </string-array>
 </resources>

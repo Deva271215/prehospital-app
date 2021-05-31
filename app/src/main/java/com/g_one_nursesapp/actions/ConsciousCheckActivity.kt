@@ -5,14 +5,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.g_one_nursesapp.ChatFieldActivity
 import com.g_one_nursesapp.R
+import com.g_one_nursesapp.api.response.ChatResponse
+import com.g_one_nursesapp.api.response.UserResponse
+import com.g_one_nursesapp.databinding.ActivityConsciousCheckBinding
 import com.g_one_nursesapp.entity.MessageEntity
+import com.g_one_nursesapp.preference.UserPreference
+import com.g_one_nursesapp.utility.SocketIOInstance
 import com.g_one_nursesapp.viewmodels.ConsciousCheckViewModel
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_conscious_check.*
 import java.util.*
 
@@ -21,12 +26,16 @@ class ConsciousCheckActivity : AppCompatActivity() {
     private var voiceResponseNum: Int = 0
     private var movementResponseNum: Int = 0
     private var resultCount: Int = 0
-
     private lateinit var consciousCheckViewModel: ConsciousCheckViewModel
+    private lateinit var binding: ActivityConsciousCheckBinding
+    private lateinit var preference: UserPreference
+    private val socket = SocketIOInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_conscious_check)
+        preference = UserPreference(applicationContext)
+        binding = ActivityConsciousCheckBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         consciousCheckViewModel = ViewModelProvider(this).get(ConsciousCheckViewModel::class.java)
 
@@ -34,79 +43,54 @@ class ConsciousCheckActivity : AppCompatActivity() {
         supportActionBar?.title = "Periksa Kesadaran"
 
         val spListEyeResponses = resources.getStringArray(R.array.eye_responses)
-
         val adapterEye = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, spListEyeResponses)
         inputEyeRespon.adapter = adapterEye
-        inputEyeRespon.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        inputEyeRespon.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-
-                eyeResponseNum = if (position == 0) {
-                    0
-                }
-                else {
-                    position
-                }
-
+                eyeResponseNum = if (position != 0) position else 0
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                eyeResponseNum = 0
-            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
         val spListVoice = resources.getStringArray(R.array.voice_response)
-        val adapterVoice = ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spListVoice)
+        val adapterVoice = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, spListVoice)
         inputVoiceRespon.adapter = adapterVoice
-        inputVoiceRespon.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        inputVoiceRespon.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                voiceResponseNum = if (position == 0) {
-                    0
-                }
-                else {
-                    position
-                }
+                voiceResponseNum = if (position != 0) position else 0
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
         val spListMove = resources.getStringArray(R.array.movement_response)
-        val adapterMove = ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, spListMove)
+        val adapterMove = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, spListMove)
         inputMoveRespon.adapter = adapterMove
-        inputMoveRespon.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        inputMoveRespon.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                movementResponseNum = if (position == 0) {
-                    0
-                } else {
-                    position
-                }
+                movementResponseNum = if (position != 0) position else 0
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
-        val buttonSubmit = findViewById<TextView>(R.id.button_submite)
-        buttonSubmit.setOnClickListener {
+        binding.buttonSubmite.setOnClickListener {
             resultCount = eyeResponseNum + voiceResponseNum + movementResponseNum
-
             when {
                 eyeResponseNum == 0 -> {
-                    Toast.makeText(
-                        this,
-                        "Respon mata belum dimasukan",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(this, "Respon mata belum dimasukan", Toast.LENGTH_LONG)
+                            .show()
                 }
                 voiceResponseNum == 0 -> {
                     Toast.makeText(this, "Respon suara belum dimasukan", Toast.LENGTH_LONG)
-                        .show()
+                            .show()
                 }
                 movementResponseNum == 0 -> {
                     Toast.makeText(this, "Respon gerakan belum dimasukan", Toast.LENGTH_LONG)
-                        .show()
+                            .show()
                 }
                 else -> {
-
                     // Create message
                     val message = MessageEntity(
                         id = UUID.randomUUID().toString(),
@@ -115,6 +99,9 @@ class ConsciousCheckActivity : AppCompatActivity() {
                     )
                     consciousCheckViewModel.insertOneMessage(message)
 
+                    if (preference.getIsHospitalSelected()) {
+                        emitMessageToSocket(message)
+                    }
                     val intent = Intent(this, ChatFieldActivity::class.java)
                     startActivity(intent)
                 }
@@ -125,5 +112,13 @@ class ConsciousCheckActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    private fun emitMessageToSocket(message: MessageEntity) {
+        val activeChat = preference.getActiveChat()
+        message.chat = Gson().fromJson("""$activeChat""", ChatResponse::class.java)
+        socket.initSocket()
+        socket.connectToSocket()
+        socket.getSocket()?.emit("send_message", Gson().toJson(message))
     }
 }

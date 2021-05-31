@@ -39,10 +39,9 @@ internal class UserPreference(context: Context) {
     }
 
     // Hospital
-    fun setSelectedHospital(value: HospitalsResponse) {
+    fun setSelectedHospital(value: String) {
         val e = preferences.edit()
-        val gson = Gson()
-        e.apply { putString(SELECTED_HOSPITAL, gson.toJson(value)) }.apply()
+        e.apply { putString(SELECTED_HOSPITAL, value) }.apply()
     }
     fun setIsHospitalSelected(value: Boolean) {
         val e = preferences.edit()
@@ -56,7 +55,7 @@ internal class UserPreference(context: Context) {
     // Chat
     fun setActiveChat(value: ChatResponse) {
         val e = preferences.edit()
-        e.apply{ putString(ACTIVE_CHAT, value.toString()) }.apply()
+        e.apply{ putString(ACTIVE_CHAT, Gson().toJson(value)) }.apply()
     }
     fun getActiveChat(): String? = preferences.getString(ACTIVE_CHAT, "")
 }
