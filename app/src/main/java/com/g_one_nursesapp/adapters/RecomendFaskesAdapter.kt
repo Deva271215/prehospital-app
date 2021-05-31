@@ -15,14 +15,12 @@ import kotlinx.android.synthetic.main.rcm_faskes.view.*
 class RecomendFaskesAdapter: RecyclerView.Adapter<RecomendFaskesAdapter.ViewHolder>() {
     private var hospitals = emptyList<HospitalsResponse>()
 
-    fun setHospital(hospital: List<HospitalsResponse>) {
-        hospitals = hospital
+    fun setHospitals(h: List<HospitalsResponse>) {
+        hospitals = h
         notifyDataSetChanged()
     }
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        private val preference: UserPreference = UserPreference(view.context)
-
         fun bind(item: HospitalsResponse) {
             val gson = Gson()
             with(itemView) {
@@ -40,7 +38,11 @@ class RecomendFaskesAdapter: RecyclerView.Adapter<RecomendFaskesAdapter.ViewHold
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.rcm_faskes, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(LayoutInflater.from(parent.context).inflate(
+            R.layout.rcm_faskes,
+            parent,
+            false
+    ))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(hospitals[position])
 

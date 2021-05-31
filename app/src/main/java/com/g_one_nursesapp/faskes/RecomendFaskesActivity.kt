@@ -4,9 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.g_one_nursesapp.ChatFieldActivity
-import com.g_one_nursesapp.R
 import com.g_one_nursesapp.adapters.RecomendFaskesAdapter
 import com.g_one_nursesapp.api.RetrofitClient
 import com.g_one_nursesapp.api.response.HospitalsResponse
@@ -24,10 +24,9 @@ class RecomendFaskesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        preference = UserPreference(applicationContext)
         binding = ActivityRecomendFaskesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        preference = UserPreference(applicationContext)
 
         // Adapter
         adapter = RecomendFaskesAdapter()
@@ -37,23 +36,7 @@ class RecomendFaskesActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Rekomendasi Faskes"
 
-        val user = preference.getLoginData()
-        RetrofitClient.instance.getHospitals("Bearer ${user.access_token}").enqueue(object: Callback<List<HospitalsResponse>> {
-            override fun onResponse(
-                call: Call<List<HospitalsResponse>>,
-                response: Response<List<HospitalsResponse>>
-            ) {
-                Log.i("Hospitals", response.body().toString())
-                if (response.isSuccessful) {
-                    adapter.setHospital(response.body()!!)
-                }
-            }
-
-            override fun onFailure(call: Call<List<HospitalsResponse>>, t: Throwable) {
-                Log.i("Hospitals", t.message.toString())
-            }
-
-        })
+        displayHospitals()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -64,5 +47,22 @@ class RecomendFaskesActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val intent = Intent(this, ChatFieldActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun displayHospitals() {
+        val token = preference.getLoginData().access_token
+        RetrofitClient.instance.getHospitals("Bearer $token").enqueue(object: Callback<List<HospitalsResponse>> {
+            override fun onResponse(
+                    call: Call<List<HospitalsResponse>>,
+                    response: Response<List<HospitalsResponse>>
+            ) {
+                if (response.isSuccessful) { adapter.setHospitals(response.body()!!) }
+            }
+
+            override fun onFailure(call: Call<List<HospitalsResponse>>, t: Throwable) {
+                Log.i("Error on fetching hospitals", t.message.toString())
+                Toast.makeText(this@RecomendFaskesActivity, t.message, Toast.LENGTH_LONG).show()
+            }
+        })
     }
 }
