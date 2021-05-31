@@ -2,9 +2,11 @@ package com.g_one_nursesapp
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -18,6 +20,9 @@ import com.g_one_nursesapp.entity.MessageEntity
 import com.g_one_nursesapp.preference.UserPreference
 import com.g_one_nursesapp.viewmodels.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import java.io.File
 import java.util.*
@@ -111,14 +116,29 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
-            // Create message
-            val messageId = UUID.randomUUID().toString()
-            val message = MessageEntity(
-                id = messageId,
-                message = "Posisi awal",
-                attachments = photoFile.absolutePath
-            )
-            mainViewModel.insertOneMessage(message)
+            // Upload photo to Firebase Storage
+            var storageRef = FirebaseStorage.getInstance().reference
+            var file = Uri.fromFile(photoFile.absoluteFile)
+            var uploadRef = storageRef.child("uploads/${photoFile.name}")
+            uploadRef.putFile(file).addOnFailureListener {
+                Log.i("Error when upload file", it.message.toString())
+                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+            }.addOnCompleteListener {
+                if (it.isSuccessful) {
+                    uploadRef.downloadUrl.addOnSuccessListener {uri ->
+                        // Create message
+                        val messageId = UUID.randomUUID().toString()
+                        val message = MessageEntity(
+                                id = messageId,
+                                message = "Posisi awal",
+                                attachments = uri.toString()
+                        )
+                        mainViewModel.insertOneMessage(message)
+                    }
+                } else {
+                    Toast.makeText(this@MainActivity, "Upload failed", Toast.LENGTH_LONG).show()
+                }
+            }
 
             val intent = Intent(this, ChatFieldActivity::class.java)
             startActivity(intent)
