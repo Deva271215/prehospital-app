@@ -18,7 +18,6 @@ class ChatFieldViewModel(application: Application): AndroidViewModel(application
     init {
         val appDao = AppDatabase.useDatabase(application)?.appDao()
         appRepository = AppRepository(appDao!!)
-
         fetchMessages = appRepository.fetchMessages
     }
 

@@ -2,6 +2,7 @@ package com.g_one_nursesapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -11,11 +12,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.g_one_nursesapp.adapters.ChatFieldAdapter
+import com.g_one_nursesapp.api.response.ChatResponse
+import com.g_one_nursesapp.api.response.HospitalsResponse
+import com.g_one_nursesapp.api.socket.InitChatPayload
+import com.g_one_nursesapp.api.socket.SendBulkMessagesPayload
 import com.g_one_nursesapp.databinding.ActivityChatFieldBinding
 import com.g_one_nursesapp.preference.UserPreference
 import com.g_one_nursesapp.utility.SocketIOInstance
 import com.g_one_nursesapp.viewmodels.ChatFieldViewModel
+import com.github.nkzawa.socketio.client.Ack
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_chat_field.*
 import kotlinx.android.synthetic.main.activity_main.toolbar
 
@@ -29,7 +36,8 @@ class ChatFieldActivity : AppCompatActivity() {
     private lateinit var chatFieldAdapter: ChatFieldAdapter
     private lateinit var preference: UserPreference
     private lateinit var binding: ActivityChatFieldBinding
-    private val socketIOInstance = SocketIOInstance()
+    private val socket = SocketIOInstance()
+    private var messages = ArrayList<SendBulkMessagesPayload>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +48,8 @@ class ChatFieldActivity : AppCompatActivity() {
 
         // Adapter
         chatFieldAdapter = ChatFieldAdapter()
-        rvChatField.layoutManager = LinearLayoutManager(applicationContext)
-        rvChatField.adapter = chatFieldAdapter
+        binding.rvChatField.layoutManager = LinearLayoutManager(applicationContext)
+        binding.rvChatField.adapter = chatFieldAdapter
 
         // View model
         chatFieldViewModel = ViewModelProvider(this).get(ChatFieldViewModel::class.java)
@@ -49,6 +57,16 @@ class ChatFieldActivity : AppCompatActivity() {
         onBackButtonHandler()
         onActionButtonClicked()
         displayMessagesFromRoom()
+
+        val isHospitalSelected = intent.getBooleanExtra(IS_HOSPITAL_SELECTED, false)
+        val selectedHospital = intent.getStringExtra(SELECTED_HOSPITAL)
+        if (isHospitalSelected) {
+            // Save selected hospital data to preferences
+            preference.setIsHospitalSelected(isHospitalSelected)
+            preference.setSelectedHospital(selectedHospital!!)
+
+            getAllMessagesFromLocalDatabase(selectedHospital)
+        }
     }
 
     override fun onBackPressed() {
@@ -63,7 +81,7 @@ class ChatFieldActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        socketIOInstance.getSocket()?.disconnect()
+        socket.getSocket()?.disconnect()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -119,6 +137,50 @@ class ChatFieldActivity : AppCompatActivity() {
     private fun displayMessagesFromRoom() {
         chatFieldViewModel.fetchMessages.observe(this, {
             chatFieldAdapter.setMessages(it)
+        })
+    }
+
+    private fun initChatAndMessagesToServer(selectedHospital: String) {
+        socket.initSocket()
+        socket.connectToSocket()
+
+        val user = preference.getLoginData().user
+        val hospital = Gson().fromJson("""$selectedHospital""", HospitalsResponse::class.java)
+        val initChatPayload = InitChatPayload(user!!, hospital)
+        socket.getSocket()?.emit("init_chat", Gson().toJson(initChatPayload), object: Ack {
+            override fun call(vararg args: Any?) {
+                // Save currently active chat to SharedPreferences
+                val res = args[0]
+                val chatInJson = Gson().fromJson("""$res""", ChatResponse::class.java)
+                preference.setActiveChat(chatInJson)
+
+                for (message in messages) {
+                    message.chat = chatInJson
+                }
+
+                socket.getSocket()?.emit("join_chat")
+                socket.getSocket()?.emit("send_bulk_messages", Gson().toJson(messages))
+            }
+        })
+    }
+
+    private fun getAllMessagesFromLocalDatabase(selectedHospital: String) {
+        chatFieldViewModel.fetchMessages.observe(this@ChatFieldActivity, {
+            messages = ArrayList<SendBulkMessagesPayload>()
+            for (item in it) {
+                val message = SendBulkMessagesPayload(
+                        message = item.message,
+                        creationTime = item.creationTime!!,
+                        result = item.result,
+                        response = item.response,
+                        condition = item.condition,
+                        action = item.action,
+                        attachments = item.attachments
+                )
+                messages.add(message)
+            }
+
+            initChatAndMessagesToServer(selectedHospital)
         })
     }
 }
