@@ -101,4 +101,10 @@ dependencies {
 
     // Socket
     implementation 'com.github.nkzawa:socket.io-client:0.6.0'
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:28.0.1')
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
 }

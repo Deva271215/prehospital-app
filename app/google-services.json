@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "561753843131",
+    "project_id": "g-one-capstone",
+    "storage_bucket": "g-one-capstone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561753843131:android:f33de726b47ab24bf0109e",
+        "android_client_info": {
+          "package_name": "com.g_one_hospitalapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "561753843131-rcbonqhbrlj7cig9qgbqjvv86594gi7r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFazPT9KoTJ5nZKQH5zR8sfNQA523NPHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "561753843131-rcbonqhbrlj7cig9qgbqjvv86594gi7r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
