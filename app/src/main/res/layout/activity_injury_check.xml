@@ -1,69 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/checkConsciousFragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:scrollbars="horizontal"
     android:layout_marginHorizontal="20dp">
 
-        <EditText
-            android:id="@+id/selectInjuriesInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:autofillHints="@string/prompt_injury"
-            android:background="@drawable/button_nofill"
-            android:hint="@string/prompt_injury"
-            android:padding="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pertama_text" />
+    <TextView
+        android:id="@+id/pertama_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="50dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/opensansreguler"
+        android:gravity="center"
+        android:text="@string/text_cekLuka"
+        android:textColor="@color/red"
+        android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/optionalInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:autofillHints="@string/prompt_injury_optional"
-            android:background="@drawable/button_nofill"
-            android:hint="@string/prompt_injury_optional"
-            android:padding="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/selectInjuriesInput" />
+    <EditText
+        android:id="@+id/selectInjuriesInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/opensansreguler"
+        android:background="@drawable/button_nofill"
+        android:hint="@string/prompt_injury"
+        android:padding="20dp" />
 
+    <EditText
+        android:id="@+id/optionalInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/opensansreguler"
+        android:autofillHints="@string/prompt_injury_optional"
+        android:background="@drawable/button_nofill"
+        android:hint="@string/prompt_injury_optional"
+        android:padding="20dp"/>
 
-        <TextView
-            android:id="@+id/pertama_text"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/opensansreguler"
-            android:gravity="center"
-            android:text="@string/text_cekLuka"
-            android:textColor="@color/red"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/button_submite"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/rounded_botton_noedge"
+        android:fontFamily="@font/opensansbold"
+        android:gravity="center"
+        android:text="@string/button_send"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/button_submite"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="50dp"
-            android:background="@drawable/rounded_botton_noedge"
-            android:fontFamily="@font/opensansbold"
-            android:gravity="center"
-            android:text="@string/button_send"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/optionalInput" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

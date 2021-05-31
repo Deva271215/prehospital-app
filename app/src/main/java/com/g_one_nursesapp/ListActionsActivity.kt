@@ -3,10 +3,7 @@ package com.g_one_nursesapp
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.g_one_nursesapp.actions.ConsciousCheckActivity
-import com.g_one_nursesapp.actions.InjuryCheckActivity
-import com.g_one_nursesapp.actions.RespirationsCheckActivity
-import com.g_one_nursesapp.actions.TensiCheckActivity
+import com.g_one_nursesapp.actions.*
 import kotlinx.android.synthetic.main.activity_list_actions.*
 
 class ListActionsActivity : AppCompatActivity() {
@@ -45,6 +42,11 @@ class ListActionsActivity : AppCompatActivity() {
 
         button_CekLuka.setOnClickListener {
             val intent = Intent(this, InjuryCheckActivity::class.java)
+            startActivity(intent)
+        }
+
+        button_additional_note.setOnClickListener {
+            val intent = Intent(this, AdditionalNotesActivity::class.java)
             startActivity(intent)
         }
 
