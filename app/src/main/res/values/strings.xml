@@ -108,6 +108,7 @@
         <item>Beraksi saat diperintah buka mata</item>
         <item>Mata terbuka normal tanpa rangsangan dan perintah</item>
     </string-array>
+
     <string-array name="voice_response">
         <item>Bagaimana respon suara korban?</item>
         <item>Tidak ada respon suara</item>
