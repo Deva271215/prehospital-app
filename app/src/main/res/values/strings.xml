@@ -145,4 +145,15 @@
         <item>Dapat menunjukan lokasi nyeri</item>
         <item>Bergerak normal</item>
     </string-array>
+
+    <string-array name="injury_items">
+        <item>Patah tulang</item>
+        <item>Luka lecet</item>
+        <item>Pendarahan di kepala</item>
+        <item>Lengan kanan berdarah</item>
+        <item>Lengan kiri berdarah</item>
+        <item>Kaki kanan berdarah</item>
+        <item>Kaki kiri berdarah</item>
+        <item>Punggung terluka</item>
+    </string-array>
 </resources>

@@ -10,7 +10,7 @@ private const val URI = "http://192.168.18.10:8080"
 class SocketIOInstance {
     private var mSocket: Socket? = null
 
-    fun connectToSocketServer() {
+    fun initSocket() {
         try {
             val opts = IO.Options()
             opts.forceNew = true
@@ -18,6 +18,12 @@ class SocketIOInstance {
             mSocket = IO.socket(URI, opts)
         } catch(e: URISyntaxException) {
             throw RuntimeException(e)
+        }
+    }
+
+    fun connectToSocket() {
+        if (!mSocket?.connected()!!) {
+            mSocket!!.connect()
         }
     }
 
