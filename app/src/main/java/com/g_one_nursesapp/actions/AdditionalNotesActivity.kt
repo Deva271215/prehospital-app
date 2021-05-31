@@ -23,6 +23,9 @@ class AdditionalNotesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_additional_notes)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Catatan Tambahan"
+
         val buttonSubmit = findViewById<TextView>(R.id.button_submite_additional)
         buttonSubmit.setOnClickListener {
             val addInput = loginEmail.text.toString().trim()
