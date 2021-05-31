@@ -1,8 +1,7 @@
 package com.g_one_nursesapp.api
 
-import com.g_one_nursesapp.api.response.HospitalsResponse
-import com.g_one_nursesapp.api.response.LoginResponse
-import com.g_one_nursesapp.api.response.SignUpResponse
+import com.g_one_nursesapp.api.response.*
+import com.g_one_nursesapp.entity.MessageEntity
 import com.g_one_nursesapp.entity.UserEntity
 import retrofit2.Call
 import retrofit2.http.*
@@ -21,4 +20,20 @@ interface Api {
 
     @GET("hospitals")
     fun getHospitals(@Header("Authorization") header: String): Call<List<HospitalsResponse>>
+
+    @GET("chats")
+    fun getChats(@Header("Authorization") header: String): Call<ArrayList<ChatResponse>>
+
+    @GET("chats/hospital/{id}")
+    fun getChatsByHospital(
+        @Path("id") id: String,
+        @Header("Authorization") header: String
+    ): Call<ArrayList<ChatResponse>>
+
+    // Message
+    @GET("messages/chat/{id}")
+    fun getMessages(
+            @Path("id") id: String,
+            @Header("Authorization") header: String
+    ): Call<ArrayList<MessageEntity>>
 }

@@ -3,6 +3,7 @@ package com.g_one_nursesapp.auth.signup
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.g_one_nursesapp.R
@@ -80,8 +81,9 @@ class SignupActivity : AppCompatActivity() {
                     }
 
                     override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
+                        Log.i("resposne", response.body().toString())
 
-                      if (response.code() == 201){
+                      if (response.isSuccessful){
                             val intent = Intent(this@SignupActivity, LoginActivity::class.java)
                             startActivity(intent)
                           Toast.makeText(applicationContext, response.body()?.message, Toast.LENGTH_LONG).show()

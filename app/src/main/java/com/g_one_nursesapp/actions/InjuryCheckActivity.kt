@@ -3,15 +3,20 @@ package com.g_one_nursesapp.actions
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Message
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.g_one_nursesapp.ChatFieldActivity
+import com.g_one_nursesapp.R
+import com.g_one_nursesapp.api.response.ChatResponse
 import com.g_one_nursesapp.databinding.ActivityInjuryCheckBinding
 import com.g_one_nursesapp.entity.MessageEntity
 import com.g_one_nursesapp.faskes.RecomendFaskesActivity
 import com.g_one_nursesapp.preference.UserPreference
+import com.g_one_nursesapp.utility.SocketIOInstance
 import com.g_one_nursesapp.viewmodels.InjuryCheckViewModel
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_injury_check.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -22,9 +27,9 @@ class InjuryCheckActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInjuryCheckBinding
     private lateinit var injuryCheckViewModel: InjuryCheckViewModel
     private lateinit var preference: UserPreference
-
+    private lateinit var result: String
     private val injuriesList = ArrayList<Int>()
-    private lateinit var injuriesString: String
+    private val socket = SocketIOInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,26 +53,16 @@ class InjuryCheckActivity : AppCompatActivity() {
     }
 
     private fun onSelectInjuriesInput() {
-        val injuries = arrayOf(
-                "Patah tulang",
-                "Luka lecet",
-                "Pendarahan di kepala",
-                "Lengan kanan berdarah",
-                "Lengan kiri berdarah",
-                "Kaki kanan berdarah",
-                "Kaki kiri berdarah",
-                "Punggung terluka"
-        )
-        val selectedInjuries = BooleanArray(injuries.size)
-
+        val injuryItems = resources.getStringArray(R.array.injury_items)
+        val selectedInjuries = BooleanArray(injuryItems.size)
         // Initialize dialog
-        selectInjuriesInput.isFocusable = false
-        selectInjuriesInput.isClickable = true
-        selectInjuriesInput.setOnClickListener{
+        binding.selectInjuriesInput.isFocusable = false
+        binding.selectInjuriesInput.isClickable = true
+        binding.selectInjuriesInput.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Pilih cidera")
             builder.setCancelable(false)
-            builder.setMultiChoiceItems(injuries, selectedInjuries) { _, which, isChecked ->
+            builder.setMultiChoiceItems(injuryItems, selectedInjuries) { _, which, isChecked ->
                 if (isChecked) {
                     injuriesList.add(which)
                     injuriesList.sort()
@@ -79,9 +74,9 @@ class InjuryCheckActivity : AppCompatActivity() {
             builder.setPositiveButton("Pilih") { _, _ ->
                 val items = ArrayList<String>()
                 for (injury in injuriesList) {
-                    items.add(injuries[injury])
+                    items.add(injuryItems[injury])
                 }
-                injuriesString = items.joinToString { "$it" }
+                result = items.joinToString { "$it" }
                 selectInjuriesInput.setText(items.joinToString { "$it" })
             }
             builder.show()
@@ -89,15 +84,17 @@ class InjuryCheckActivity : AppCompatActivity() {
     }
 
     private fun onSubmitButtonClicked() {
-        button_submite.setOnClickListener {
+        binding.buttonSubmite.setOnClickListener {
+            // Create new message and store to local database
             val message = MessageEntity(
                     id = UUID.randomUUID().toString(),
                     message = "Periksa Cidera",
-                    result = injuriesString,
+                    result = result,
             )
             injuryCheckViewModel.insertOneMessage(message)
 
             if(preference.getIsHospitalSelected()) {
+                emitMessageToSocket(message)
                 val intent = Intent(this, ChatFieldActivity::class.java)
                 startActivity(intent)
             } else {
@@ -105,5 +102,13 @@ class InjuryCheckActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+    }
+
+    private fun emitMessageToSocket(message: MessageEntity) {
+        val activeChat = preference.getActiveChat()
+        message.chat = Gson().fromJson("""$activeChat""", ChatResponse::class.java)
+        socket.initSocket()
+        socket.connectToSocket()
+        socket.getSocket()?.emit("send_message", Gson().toJson(message))
     }
 }
