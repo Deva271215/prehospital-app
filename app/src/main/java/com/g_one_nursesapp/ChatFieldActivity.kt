@@ -2,34 +2,40 @@ package com.g_one_nursesapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.g_one_nursesapp.adapters.ChatFieldAdapter
+import com.g_one_nursesapp.api.RetrofitClient
 import com.g_one_nursesapp.api.response.ChatResponse
 import com.g_one_nursesapp.api.response.HospitalsResponse
 import com.g_one_nursesapp.api.socket.InitChatPayload
 import com.g_one_nursesapp.api.socket.SendBulkMessagesPayload
 import com.g_one_nursesapp.databinding.ActivityChatFieldBinding
+import com.g_one_nursesapp.entity.MessageEntity
 import com.g_one_nursesapp.preference.UserPreference
 import com.g_one_nursesapp.utility.SocketIOInstance
 import com.g_one_nursesapp.viewmodels.ChatFieldViewModel
 import com.github.nkzawa.socketio.client.Ack
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_chat_field.*
 import kotlinx.android.synthetic.main.activity_main.toolbar
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ChatFieldActivity : AppCompatActivity() {
     companion object {
         const val IS_HOSPITAL_SELECTED = "IS_HOSPITAL_SELECTED"
         const val SELECTED_HOSPITAL = "SELECTED_HOSPITAL"
+        const val CHAT_ROOM_ID = "CHAT_ROOM_ID"
+        const val IS_FROM_HISTORY = "IS_FROM_HISTORY"
     }
 
     private lateinit var chatFieldViewModel: ChatFieldViewModel
@@ -56,7 +62,14 @@ class ChatFieldActivity : AppCompatActivity() {
 
         onBackButtonHandler()
         onActionButtonClicked()
-        displayMessagesFromRoom()
+
+        val isFromHistory = intent.getBooleanExtra(IS_FROM_HISTORY, false)
+        if (isFromHistory) {
+            binding.btnTindakan.visibility = View.GONE
+            loadMessagesBasedOnChatId()
+        } else {
+            displayMessagesFromRoom()
+        }
 
         val isHospitalSelected = intent.getBooleanExtra(IS_HOSPITAL_SELECTED, false)
         val selectedHospital = intent.getStringExtra(SELECTED_HOSPITAL)
@@ -75,7 +88,9 @@ class ChatFieldActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.done_menu, menu)
+        if (!intent.getBooleanExtra(IS_FROM_HISTORY, false)) {
+            menuInflater.inflate(R.menu.done_menu, menu)
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -181,6 +196,22 @@ class ChatFieldActivity : AppCompatActivity() {
             }
 
             initChatAndMessagesToServer(selectedHospital)
+        })
+    }
+
+    private fun loadMessagesBasedOnChatId() {
+        val chatRoomId = intent.getStringExtra(CHAT_ROOM_ID)
+        val token = preference.getLoginData()?.access_token
+        RetrofitClient.instance.getMessages(chatRoomId!!, "Bearer $token").enqueue(object: Callback<ArrayList<MessageEntity>> {
+            override fun onResponse(call: Call<ArrayList<MessageEntity>>, response: Response<ArrayList<MessageEntity>>) {
+                if (response.isSuccessful) {
+                    chatFieldAdapter.setMessages(response.body()!!)
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<MessageEntity>>, t: Throwable) {
+                Toast.makeText(this@ChatFieldActivity, t.message, Toast.LENGTH_LONG).show()
+            }
         })
     }
 }
