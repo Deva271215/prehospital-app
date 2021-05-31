@@ -11,19 +11,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.g_one_nursesapp.adapters.ChatFieldAdapter
-import com.g_one_nursesapp.api.response.ChatResponse
-import com.g_one_nursesapp.api.response.HospitalsResponse
-import com.g_one_nursesapp.api.socket.InitChatPayload
-import com.g_one_nursesapp.api.socket.SendBulkMessagesPayload
+import com.g_one_nursesapp.databinding.ActivityChatFieldBinding
 import com.g_one_nursesapp.preference.UserPreference
 import com.g_one_nursesapp.utility.SocketIOInstance
 import com.g_one_nursesapp.viewmodels.ChatFieldViewModel
-import com.github.nkzawa.socketio.client.Ack
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_chat_field.*
 import kotlinx.android.synthetic.main.activity_main.toolbar
-import java.util.*
 
 class ChatFieldActivity : AppCompatActivity() {
     companion object {
@@ -34,108 +28,27 @@ class ChatFieldActivity : AppCompatActivity() {
     private lateinit var chatFieldViewModel: ChatFieldViewModel
     private lateinit var chatFieldAdapter: ChatFieldAdapter
     private lateinit var preference: UserPreference
-    private lateinit var createdChat: ChatResponse
-
-    private var gson = Gson()
-    private var messageResults = ArrayList<SendBulkMessagesPayload>()
-
+    private lateinit var binding: ActivityChatFieldBinding
     private val socketIOInstance = SocketIOInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat_field)
-
+        preference = UserPreference(applicationContext)
+        binding = ActivityChatFieldBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setSupportActionBar(toolbar)
 
-        preference = UserPreference(applicationContext)
-
+        // Adapter
         chatFieldAdapter = ChatFieldAdapter()
         rvChatField.layoutManager = LinearLayoutManager(applicationContext)
         rvChatField.adapter = chatFieldAdapter
 
+        // View model
         chatFieldViewModel = ViewModelProvider(this).get(ChatFieldViewModel::class.java)
 
-        // Get data from intent
-        val isHospitalSelected = intent.getBooleanExtra(IS_HOSPITAL_SELECTED, false)
-        val selectedHospital = gson.fromJson(intent.getStringExtra(SELECTED_HOSPITAL), HospitalsResponse::class.java)
-        if (isHospitalSelected) {
-            // Get all messages from room database
-            chatFieldViewModel.fetchMessages.observe(this@ChatFieldActivity, {
-                messageResults = ArrayList<SendBulkMessagesPayload>()
-                for (item in it) {
-                    val message = SendBulkMessagesPayload(
-                        message = item.message,
-                        creationTime = item.creationTime!!,
-                        result = item.result,
-                        response = item.response,
-                        condition = item.condition,
-                        action = item.action,
-                        attachments = item.attachments
-                    )
-                    messageResults.add(message)
-                }
-            })
-
-            // Set selected hospital to shared preferences
-            preference.setIsHospitalSelected(isHospitalSelected)
-            preference.setSelectedHospital(selectedHospital)
-
-            // Connect to socket
-            socketIOInstance.connectToSocketServer()
-            if (!socketIOInstance.getSocket()?.connected()!!) {
-                socketIOInstance.getSocket()?.connect()
-            }
-
-            // Emit init_chat event to server via socket
-            val initChatPayload = InitChatPayload(preference.getLoginData().user!!, selectedHospital)
-            socketIOInstance.getSocket()?.emit("init_chat", gson.toJson(initChatPayload), object: Ack {
-                override fun call(vararg args: Any?) {
-                    // Set currently active chat to shared preferences
-                    val newChat = args[0]
-                    val json = gson.fromJson("""$newChat""", ChatResponse::class.java)
-                    preference.setActiveChat(json)
-                    createdChat = json
-
-                    // Append chat in messageResults variable
-                    val tempResult = ArrayList<SendBulkMessagesPayload>()
-                    for (m in messageResults) {
-                        m.chat = json
-                        tempResult.add(m)
-                    }
-
-                    // Emit event to socket server
-                    socketIOInstance.getSocket()?.emit("join_chat", json.id)
-                    socketIOInstance.getSocket()?.emit("send_bulk_messages", gson.toJson(tempResult))
-                }
-            })
-        }
-
-        toolbar.setNavigationOnClickListener{
-
-            val bottomSheetDialogAlertBack = BottomSheetDialog(
-                this@ChatFieldActivity, R.style.BottomSheetFragmentTheme
-            )
-
-            val bottomSheetViewAlertBack = LayoutInflater.from(applicationContext).inflate(
-                R.layout.fragment_back_alert,
-                findViewById<LinearLayout>(R.id.backAlertFragment)
-            )
-
-            bottomSheetViewAlertBack.findViewById<View>(R.id.button_yakin).setOnClickListener{
-                onBackPressed()
-                chatFieldViewModel.deleteMessages()
-                bottomSheetDialogAlertBack.dismiss()
-            }
-
-            bottomSheetDialogAlertBack.setContentView(bottomSheetViewAlertBack)
-            bottomSheetDialogAlertBack.show()
-        }
-
-        chatFieldViewModel.fetchMessages.observe(this, {
-            chatFieldAdapter.setMessages(it)
-        })
-
-        setButtonTindakan()
+        onBackButtonHandler()
+        onActionButtonClicked()
+        displayMessagesFromRoom()
     }
 
     override fun onBackPressed() {
@@ -148,6 +61,10 @@ class ChatFieldActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        socketIOInstance.getSocket()?.disconnect()
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
@@ -155,7 +72,6 @@ class ChatFieldActivity : AppCompatActivity() {
                 val bottomSheetDone = BottomSheetDialog(
                     this@ChatFieldActivity, R.style.BottomSheetFragmentTheme
                 )
-
                 val bottomSheetView = LayoutInflater.from(applicationContext).inflate(
                     R.layout.fragment_done,
                     findViewById<LinearLayout>(R.id.fragmentDone)
@@ -165,7 +81,6 @@ class ChatFieldActivity : AppCompatActivity() {
                     val intent = Intent(this, PredictionsActivity::class.java)
                     startActivity(intent)
                 }
-
                 bottomSheetDone.setContentView(bottomSheetView)
                 bottomSheetDone.show()
             }
@@ -173,15 +88,37 @@ class ChatFieldActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setButtonTindakan(){
-        btnTindakan.setOnClickListener{
+    private fun onBackButtonHandler() {
+        binding.toolbar.setNavigationOnClickListener{
+            val bottomSheetDialogAlertBack = BottomSheetDialog(
+                    this@ChatFieldActivity,
+                    R.style.BottomSheetFragmentTheme
+            )
+            val bottomSheetViewAlertBack = LayoutInflater.from(applicationContext).inflate(
+                    R.layout.fragment_back_alert,
+                    findViewById<LinearLayout>(R.id.backAlertFragment)
+            )
+
+            bottomSheetViewAlertBack.findViewById<View>(R.id.button_yakin).setOnClickListener{
+                onBackPressed()
+                chatFieldViewModel.deleteMessages()
+                bottomSheetDialogAlertBack.dismiss()
+            }
+            bottomSheetDialogAlertBack.setContentView(bottomSheetViewAlertBack)
+            bottomSheetDialogAlertBack.show()
+        }
+    }
+
+    private fun onActionButtonClicked(){
+        binding.btnTindakan.setOnClickListener{
             val intent = Intent(this, ListActionsActivity::class.java)
             startActivity(intent)
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        socketIOInstance.getSocket()?.disconnect()
+    private fun displayMessagesFromRoom() {
+        chatFieldViewModel.fetchMessages.observe(this, {
+            chatFieldAdapter.setMessages(it)
+        })
     }
 }
