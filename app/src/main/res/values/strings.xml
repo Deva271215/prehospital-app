@@ -42,6 +42,7 @@
     <string name="value_traumaName">Patah Tulang</string>
     <string name="value_distance">15 Km</string>
     <string name="value_rcmFaskes">RSUP Sanglah</string>
+    <string name="value_rcmClass">Kelas A</string>
     <string name="value_historyTime">Senin, 10 Juni 2018 - 10:06</string>
     <string name="perlakuan">Cek Tensi</string>
     <string name="value_tindakan">Cek Tensi</string>
@@ -71,7 +72,7 @@
     <string name="text_noHp">No. HP</string>
     <string name="text_login">Masuk untuk mulai melakukan pertolongan</string>
     <string name="text_signup">Daftar untuk mulai melakukan pertolongan</string>
-    <string name="text_cekKesadaran">Hasil pemeriksaan akan dikalkulasikan untuk mengetahui skor GCP korban</string>
+    <string name="text_cekKesadaran">Hasil pemeriksaan akan dikalkulasikan untuk mengetahui skor GCS korban</string>
     <string name="text_cekTensi">Hasil cek tensi akan direkam ke dalam rekam medis</string>
     <string name="text_systole">Masukan Systole</string>
     <string name="text_diastole">Masukan Distole</string>
@@ -98,12 +99,14 @@
     <string name="prompt_injury_optional">Cidera tambahan (opsional)</string>
 
     <string-array name="eye_responses">
+        <item>Bagaimana respon mata pasien?</item>
         <item>Tidak ada respon mata</item>
         <item>Bereaksi saat rangsang nyeri</item>
         <item>Beraksi saat diperintah buka mata</item>
         <item>Mata terbuka normal tanpa rangsangan dan perintah</item>
     </string-array>
     <string-array name="voice_response">
+        <item>Bagaimana respon suara pasien?</item>
         <item>Tidak ada respon suara</item>
         <item>Hanya merintih</item>
         <item>Berkomunikasi dengan tidak jelas</item>
@@ -111,6 +114,7 @@
         <item>Komunikasi lancar</item>
     </string-array>
     <string-array name="movement_response">
+        <item>Bagaimana respon gerak pasien?</item>
         <item>Tidak ada respon gerakan</item>
         <item>Hanya dapat menggerakan jari tangan dan kaki</item>
         <item>Hanya menekuk lengan dan memutar bahu</item>

@@ -2,20 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:id="@+id/checkConsciousFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="20dp"
-    android:orientation="vertical">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="400dp">
+    android:orientation="vertical" >
 
         <TextView
             android:id="@+id/pertama_text"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="50dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/opensansreguler"
             android:gravity="center"
@@ -30,20 +28,9 @@
             android:id="@+id/inputEyeRespon"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_botton_noedge"
-            android:paddingStart="30dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pertama_text"
-            tools:ignore="RtlSymmetry" />
-
-        <Spinner
-            android:id="@+id/inputVoiceRespon"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_botton_noedge"
+            android:background="@drawable/button_nofill"
+            android:autofillHints="@string/pilih_tindakan"
             android:paddingStart="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,22 +38,34 @@
             tools:ignore="RtlSymmetry" />
 
         <Spinner
-            android:id="@+id/inputMoveRespon"
+            android:id="@+id/inputVoiceRespon"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_botton_noedge"
+            android:background="@drawable/button_nofill"
             android:paddingStart="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputVoiceRespon"
             tools:ignore="RtlSymmetry" />
 
+        <Spinner
+            android:id="@+id/inputMoveRespon"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_nofill"
+            android:paddingStart="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputVoiceRespon"
+            tools:ignore="RtlSymmetry" />
 
         <TextView
             android:id="@+id/button_submite"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/rounded_botton_noedge"
             android:fontFamily="@font/opensansbold"
             android:gravity="center"
@@ -77,7 +76,4 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputMoveRespon" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
 </LinearLayout>

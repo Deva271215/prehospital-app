@@ -25,8 +25,9 @@
         android:id="@+id/rvChatField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
         android:layout_marginTop="60dp"
+        android:scrollbars="none"
+        android:paddingBottom="60dp"
         tools:listitem="@layout/chat_list" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -36,6 +37,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="8dp"
+        android:layout_marginBottom="80dp"
         android:text="@string/pilih_tindakan"
         app:icon="@drawable/ic_add_plus"/>
 
