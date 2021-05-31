@@ -94,6 +94,7 @@ class InjuryCheckActivity : AppCompatActivity() {
             injuryCheckViewModel.insertOneMessage(message)
 
             if(preference.getIsHospitalSelected()) {
+                emitMessageToSocket(message)
                 val intent = Intent(this, ChatFieldActivity::class.java)
                 startActivity(intent)
             } else {
@@ -103,11 +104,11 @@ class InjuryCheckActivity : AppCompatActivity() {
         }
     }
 
-//    private fun emitMessageToSocket(message: MessageEntity) {
-//        val activeChat = preference.getActiveChat()
-//        message.chat = Gson().fromJson("""$activeChat""", ChatResponse::class.java)
-//        socket.initSocket()
-//        socket.connectToSocket()
-//        socket.getSocket()?.emit("send_message", Gson().toJson(message))
-//    }
+    private fun emitMessageToSocket(message: MessageEntity) {
+        val activeChat = preference.getActiveChat()
+        message.chat = Gson().fromJson("""$activeChat""", ChatResponse::class.java)
+        socket.initSocket()
+        socket.connectToSocket()
+        socket.getSocket()?.emit("send_message", Gson().toJson(message))
+    }
 }

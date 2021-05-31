@@ -1,13 +1,11 @@
 package com.g_one_nursesapp.adapters
 
-import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.g_one_nursesapp.R
-import com.g_one_nursesapp.api.response.MessageReponse
 import com.g_one_nursesapp.entity.MessageEntity
 import kotlinx.android.synthetic.main.chat_list.view.*
 
