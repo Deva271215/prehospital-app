@@ -27,6 +27,7 @@ class RecomendFaskesAdapter: RecyclerView.Adapter<RecomendFaskesAdapter.ViewHold
             val gson = Gson()
             with(itemView) {
                 tv_hospital.text = item.name
+                tv_hospital_class.text = item.category.toString()
                 tv_hospital_distance.text = "15 km"
 
                 setOnClickListener {

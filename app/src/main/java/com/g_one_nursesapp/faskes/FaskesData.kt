@@ -6,5 +6,6 @@ data class FaskesData (
     var faskesClass: String? = "",
     var specialization: String? = "",
     var location: String? = "",
+    var category: String?,
     var distance: Int = 0,
 )
