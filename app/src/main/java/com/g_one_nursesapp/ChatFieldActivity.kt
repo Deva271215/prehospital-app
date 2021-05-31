@@ -55,11 +55,15 @@ class ChatFieldActivity : AppCompatActivity() {
 
         chatFieldViewModel = ViewModelProvider(this).get(ChatFieldViewModel::class.java)
 
-        // Get all messages from room database
-        chatFieldViewModel.fetchMessages.observe(this@ChatFieldActivity, {
-            messageResults = ArrayList<SendBulkMessagesPayload>()
-            for (item in it) {
-                val message = SendBulkMessagesPayload(
+        // Get data from intent
+        val isHospitalSelected = intent.getBooleanExtra(IS_HOSPITAL_SELECTED, false)
+        val selectedHospital = gson.fromJson(intent.getStringExtra(SELECTED_HOSPITAL), HospitalsResponse::class.java)
+        if (isHospitalSelected) {
+            // Get all messages from room database
+            chatFieldViewModel.fetchMessages.observe(this@ChatFieldActivity, {
+                messageResults = ArrayList<SendBulkMessagesPayload>()
+                for (item in it) {
+                    val message = SendBulkMessagesPayload(
                         message = item.message,
                         creationTime = item.creationTime!!,
                         result = item.result,
@@ -67,15 +71,11 @@ class ChatFieldActivity : AppCompatActivity() {
                         condition = item.condition,
                         action = item.action,
                         attachments = item.attachments
-                )
-                messageResults.add(message)
-            }
-        })
+                    )
+                    messageResults.add(message)
+                }
+            })
 
-        // Get data from intent
-        val isHospitalSelected = intent.getBooleanExtra(IS_HOSPITAL_SELECTED, false)
-        val selectedHospital = gson.fromJson(intent.getStringExtra(SELECTED_HOSPITAL), HospitalsResponse::class.java)
-        if (isHospitalSelected) {
             // Set selected hospital to shared preferences
             preference.setIsHospitalSelected(isHospitalSelected)
             preference.setSelectedHospital(selectedHospital)
@@ -132,7 +132,7 @@ class ChatFieldActivity : AppCompatActivity() {
         }
 
         chatFieldViewModel.fetchMessages.observe(this, {
-            chatFieldAdapter.setMessage(it)
+            chatFieldAdapter.setMessages(it)
         })
 
         setButtonTindakan()

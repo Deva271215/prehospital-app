@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.chat_list.view.*
 class ChatFieldAdapter: RecyclerView.Adapter<ChatFieldAdapter.ViewHolder>() {
     private var messages = emptyList<MessageEntity>()
 
-    fun setMessage(message: List<MessageEntity>) {
+    fun setMessages(message: List<MessageEntity>) {
         messages = message
         notifyDataSetChanged()
     }

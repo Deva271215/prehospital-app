@@ -7,11 +7,14 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.g_one_nursesapp.ChatFieldActivity
+import com.g_one_nursesapp.api.response.ChatResponse
 import com.g_one_nursesapp.databinding.ActivityInjuryCheckBinding
 import com.g_one_nursesapp.entity.MessageEntity
 import com.g_one_nursesapp.faskes.RecomendFaskesActivity
 import com.g_one_nursesapp.preference.UserPreference
+import com.g_one_nursesapp.utility.SocketIOInstance
 import com.g_one_nursesapp.viewmodels.InjuryCheckViewModel
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_injury_check.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -25,6 +28,7 @@ class InjuryCheckActivity : AppCompatActivity() {
 
     private val injuriesList = ArrayList<Int>()
     private lateinit var injuriesString: String
+    private val socketIOInstance = SocketIOInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +102,15 @@ class InjuryCheckActivity : AppCompatActivity() {
             injuryCheckViewModel.insertOneMessage(message)
 
             if(preference.getIsHospitalSelected()) {
+                val activeChat = preference.getActiveChat()
+                message.chat = Gson().fromJson("""$activeChat""", ChatResponse::class.java)
+
+                socketIOInstance.connectToSocketServer()
+                if (!socketIOInstance.getSocket()?.connected()!!) {
+                    socketIOInstance.getSocket()?.connect()
+                }
+                socketIOInstance.getSocket()?.emit("send_message", Gson().toJson(message))
+                Log.i("message_log", message.toString())
                 val intent = Intent(this, ChatFieldActivity::class.java)
                 startActivity(intent)
             } else {
