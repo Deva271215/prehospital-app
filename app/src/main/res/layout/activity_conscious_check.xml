@@ -61,6 +61,16 @@
             app:layout_constraintTop_toBottomOf="@+id/inputVoiceRespon"
             tools:ignore="RtlSymmetry" />
 
+        <EditText
+            android:id="@+id/selectAdditionalInputConcious"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/opensansreguler"
+            android:background="@drawable/button_nofill"
+            android:hint="@string/prompt_additional_injury"
+            android:padding="20dp" />
+
         <TextView
             android:id="@+id/button_submite"
             android:layout_width="match_parent"
@@ -76,4 +86,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputMoveRespon" />
+
 </LinearLayout>

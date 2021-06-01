@@ -1,5 +1,6 @@
 package com.g_one_nursesapp.actions
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -19,6 +20,7 @@ import com.g_one_nursesapp.utility.SocketIOInstance
 import com.g_one_nursesapp.viewmodels.ConsciousCheckViewModel
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_conscious_check.*
+import kotlinx.android.synthetic.main.activity_injury_check.*
 import java.util.*
 
 class ConsciousCheckActivity : AppCompatActivity() {
@@ -26,6 +28,8 @@ class ConsciousCheckActivity : AppCompatActivity() {
     private var voiceResponseNum: Int = 0
     private var movementResponseNum: Int = 0
     private var resultCount: Int = 0
+    private val additionalInjuryList = ArrayList<Int>()
+    private lateinit var additionalInput: String
     private lateinit var consciousCheckViewModel: ConsciousCheckViewModel
     private lateinit var binding: ActivityConsciousCheckBinding
     private lateinit var preference: UserPreference
@@ -75,6 +79,8 @@ class ConsciousCheckActivity : AppCompatActivity() {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
+        onSelectAdditionalInjury()
+
         binding.buttonSubmite.setOnClickListener {
             resultCount = eyeResponseNum + voiceResponseNum + movementResponseNum
             when {
@@ -96,6 +102,7 @@ class ConsciousCheckActivity : AppCompatActivity() {
                         id = UUID.randomUUID().toString(),
                         message = "Periksa kesadaran",
                         result = "GCS poin $resultCount",
+                        condition = additionalInput
                     )
                     consciousCheckViewModel.insertOneMessage(message)
 
@@ -106,6 +113,37 @@ class ConsciousCheckActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
             }
+        }
+    }
+
+    private fun onSelectAdditionalInjury() {
+        val injuryItems = resources.getStringArray(R.array.additional_injury_items)
+        val selectedAdditionalInjuries = BooleanArray(injuryItems.size)
+        // Initialize dialog
+        binding.selectAdditionalInputConcious.isFocusable = false
+        binding.selectAdditionalInputConcious.isClickable = true
+        binding.selectAdditionalInputConcious.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Pilih cidera")
+            builder.setCancelable(false)
+            builder.setMultiChoiceItems(injuryItems, selectedAdditionalInjuries) { _, which, isChecked ->
+                if (isChecked) {
+                    additionalInjuryList.add(which)
+                    additionalInjuryList.sort()
+                } else {
+                    additionalInjuryList.remove(which)
+                }
+            }
+            builder.setNegativeButton("Batal") { dialog, _ -> dialog?.dismiss() }
+            builder.setPositiveButton("Pilih") { _, _ ->
+                val items = ArrayList<String>()
+                for (injury in additionalInjuryList) {
+                    items.add(injuryItems[injury])
+                }
+                additionalInput = items.joinToString { "$it" }
+                selectAdditionalInputConcious.setText(items.joinToString { "$it" })
+            }
+            builder.show()
         }
     }
 

@@ -78,6 +78,7 @@
     <string name="text_systole">Masukan Systole</string>
     <string name="text_diastole">Masukan Distole</string>
     <string name="kondisiKorban">Masukan kondisi korban</string>
+    <string name="kondisiLainnya">Masukan kondisi lainnya</string>
     <string name="text_additionalNote">Masukan kondisi lainnya, seperti penyakit bawaan </string>
     <string name="text_pasangInfus">Waktu pesangan infus akan direkam dalam rekam medis korban</string>
     <string name="text_done">Apakah semua tindakan sudah selesai?</string>
@@ -99,6 +100,7 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="title_activity_signup">SignupActivity</string>
     <string name="prompt_injury">Pilih cidera</string>
+    <string name="prompt_additional_injury">Masukan kondisi lainnya</string>
     <string name="prompt_injury_optional">Cidera tambahan (opsional)</string>
     
     <!-- Respiration check items -->
@@ -131,6 +133,7 @@
         <item>Beraksi saat diperintah buka mata</item>
         <item>Mata terbuka normal tanpa rangsangan dan perintah</item>
     </string-array>
+
     <string-array name="voice_response">
         <item>Bagaimana respon suara korban?</item>
         <item>Tidak ada respon suara</item>
@@ -151,12 +154,21 @@
 
     <string-array name="injury_items">
         <item>Patah tulang</item>
+        <item>Bengkak/memar</item>
         <item>Luka lecet</item>
+        <item>Sakit saat berjalan</item>
         <item>Pendarahan di kepala</item>
         <item>Lengan kanan berdarah</item>
         <item>Lengan kiri berdarah</item>
         <item>Kaki kanan berdarah</item>
         <item>Kaki kiri berdarah</item>
         <item>Punggung terluka</item>
+    </string-array>
+
+    <string-array name="additional_injury_items">
+        <item>Bengkak/memar</item>
+        <item>Kesulitan berjalan</item>
+        <item>Sakit saat berjalan</item>
+        <item>Kelemahan salah satu sisi tubuh</item>
     </string-array>
 </resources>
