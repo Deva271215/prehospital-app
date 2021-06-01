@@ -28,7 +28,6 @@ class ChatFieldAdapter: RecyclerView.Adapter<ChatFieldAdapter.ViewHolder>() {
                     value_respon.text = item.response
                 }
                 if (!item.result.isNullOrEmpty()) {
-                    text_hasil.visibility = View.VISIBLE
                     value_hasil.visibility = View.VISIBLE
                     value_hasil.text = item.result
                 }
