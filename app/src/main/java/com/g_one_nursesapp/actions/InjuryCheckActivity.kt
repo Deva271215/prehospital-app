@@ -17,6 +17,7 @@ import com.g_one_nursesapp.preference.UserPreference
 import com.g_one_nursesapp.utility.SocketIOInstance
 import com.g_one_nursesapp.viewmodels.InjuryCheckViewModel
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_additional_notes.*
 import kotlinx.android.synthetic.main.activity_injury_check.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -55,6 +56,7 @@ class InjuryCheckActivity : AppCompatActivity() {
     private fun onSelectInjuriesInput() {
         val injuryItems = resources.getStringArray(R.array.injury_items)
         val selectedInjuries = BooleanArray(injuryItems.size)
+
         // Initialize dialog
         binding.selectInjuriesInput.isFocusable = false
         binding.selectInjuriesInput.isClickable = true
@@ -85,11 +87,14 @@ class InjuryCheckActivity : AppCompatActivity() {
 
     private fun onSubmitButtonClicked() {
         binding.buttonSubmite.setOnClickListener {
+
+            val optionalInput = optionalInput.text.toString().trim()
+
             // Create new message and store to local database
             val message = MessageEntity(
                     id = UUID.randomUUID().toString(),
                     message = "Periksa Cidera",
-                    result = result,
+                    result = "Pasien $result \n $optionalInput"
             )
             injuryCheckViewModel.insertOneMessage(message)
 
