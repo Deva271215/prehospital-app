@@ -30,7 +30,7 @@ class ConsciousCheckActivity : AppCompatActivity() {
     private var movementResponseNum: Int = 0
     private var resultCount: Int = 0
     private val additionalInjuryList = ArrayList<Int>()
-    private lateinit var additionalInput: String
+    private var additionalInput: String = ""
     private lateinit var consciousCheckViewModel: ConsciousCheckViewModel
     private lateinit var binding: ActivityConsciousCheckBinding
     private lateinit var preference: UserPreference
