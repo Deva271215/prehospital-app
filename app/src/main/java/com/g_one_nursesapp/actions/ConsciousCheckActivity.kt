@@ -16,6 +16,7 @@ import com.g_one_nursesapp.api.response.UserResponse
 import com.g_one_nursesapp.databinding.ActivityConsciousCheckBinding
 import com.g_one_nursesapp.entity.MessageEntity
 import com.g_one_nursesapp.preference.UserPreference
+import com.g_one_nursesapp.utility.Global
 import com.g_one_nursesapp.utility.SocketIOInstance
 import com.g_one_nursesapp.viewmodels.ConsciousCheckViewModel
 import com.google.gson.Gson
@@ -52,6 +53,24 @@ class ConsciousCheckActivity : AppCompatActivity() {
         inputEyeRespon.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
                 eyeResponseNum = if (position != 0) position else 0
+                when (position) {
+                    1 -> {
+                        Global.symtomps.sakitKepala = 1
+                        Global.symtomps.bengkakAtauMemar = 1
+                        Global.symtomps.hilangKesadaran = 1
+                        Global.symtomps.nyeri = 0
+                        Global.symtomps.sakitLeher = 0
+                        Global.symtomps.sakitLutut = 0
+                    }
+                    2 -> {
+                        Global.symtomps.sakitKepala = 0
+                        Global.symtomps.bengkakAtauMemar = 1
+                        Global.symtomps.hilangKesadaran = 0
+                        Global.symtomps.nyeri = 1
+                        Global.symtomps.sakitLeher = 1
+                        Global.symtomps.sakitLutut = 1
+                    }
+                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -63,6 +82,18 @@ class ConsciousCheckActivity : AppCompatActivity() {
         inputVoiceRespon.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
                 voiceResponseNum = if (position != 0) position else 0
+                when (position) {
+                    1 or 2 or 3 -> {
+                        Global.symtomps.kesulitanBerbicara = 1
+                        Global.symtomps.kebingungan = 0
+                        Global.symtomps.lupaKejadian = 0
+                    }
+                    4 -> {
+                        Global.symtomps.kesulitanBerbicara = 0
+                        Global.symtomps.kebingungan = 1
+                        Global.symtomps.lupaKejadian = 1
+                    }
+                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -74,6 +105,50 @@ class ConsciousCheckActivity : AppCompatActivity() {
         inputMoveRespon.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
                 movementResponseNum = if (position != 0) position else 0
+                when (position) {
+                    1 -> {
+                        Global.symtomps.kelemahanOtot = 1
+                        Global.symtomps.lumpuh = 1
+                        Global.symtomps.tulangMencuatKeluarDariKulit = 1
+                        Global.symtomps.bentukSendiTidakNormal = 1
+                        Global.symtomps.tanganDanKakiDingin = 0
+                        Global.symtomps.kelemahanSatuSisiTubuh = 0
+                        Global.symtomps.matiRasaAtauKesemutan = 0
+                        Global.symtomps.sulitMenggerakkanBagianTubuh = 0
+                        Global.symtomps.ototKaku = 0
+                        Global.symtomps.detakJantungBertambah = 0
+                        Global.symtomps.ototKaku = 0
+                        Global.symtomps.kramOtot = 0
+                    }
+                    2 -> {
+                        Global.symtomps.kelemahanOtot = 0
+                        Global.symtomps.lumpuh = 0
+                        Global.symtomps.tulangMencuatKeluarDariKulit = 0
+                        Global.symtomps.bentukSendiTidakNormal = 0
+                        Global.symtomps.tanganDanKakiDingin = 1
+                        Global.symtomps.kelemahanSatuSisiTubuh = 0
+                        Global.symtomps.matiRasaAtauKesemutan = 0
+                        Global.symtomps.sulitMenggerakkanBagianTubuh = 0
+                        Global.symtomps.ototKaku = 0
+                        Global.symtomps.detakJantungBertambah = 0
+                        Global.symtomps.ototKaku = 0
+                        Global.symtomps.kramOtot = 0
+                    }
+                    3 -> {
+                        Global.symtomps.kelemahanOtot = 1
+                        Global.symtomps.lumpuh = 0
+                        Global.symtomps.tulangMencuatKeluarDariKulit = 0
+                        Global.symtomps.bentukSendiTidakNormal = 0
+                        Global.symtomps.tanganDanKakiDingin = 1
+                        Global.symtomps.kelemahanSatuSisiTubuh = 1
+                        Global.symtomps.matiRasaAtauKesemutan = 1
+                        Global.symtomps.sulitMenggerakkanBagianTubuh = 1
+                        Global.symtomps.ototKaku = 1
+                        Global.symtomps.detakJantungBertambah = 1
+                        Global.symtomps.ototKaku = 1
+                        Global.symtomps.kramOtot = 1
+                    }
+                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
