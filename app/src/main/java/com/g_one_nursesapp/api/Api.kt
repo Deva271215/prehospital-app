@@ -21,6 +21,12 @@ interface Api {
     @GET("hospitals")
     fun getHospitals(@Header("Authorization") header: String): Call<List<HospitalsResponse>>
 
+    @GET("hospitals/{lat}/{lon}")
+    fun getNearestHospitals(
+        @Path("lat") lat: Double,
+        @Path("lon") lon: Double,
+    ): Call<List<HospitalsResponse>>
+
     @GET("chats")
     fun getChats(@Header("Authorization") header: String): Call<ArrayList<ChatResponse>>
 
