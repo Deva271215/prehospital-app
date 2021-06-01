@@ -2,6 +2,7 @@ package com.g_one_nursesapp.api
 
 import com.g_one_nursesapp.api.response.*
 import com.g_one_nursesapp.entity.MessageEntity
+import com.g_one_nursesapp.entity.SymtompEntity
 import com.g_one_nursesapp.entity.UserEntity
 import retrofit2.Call
 import retrofit2.http.*
@@ -42,4 +43,10 @@ interface Api {
             @Path("id") id: String,
             @Header("Authorization") header: String
     ): Call<ArrayList<MessageEntity>>
+
+    // Prediction
+    @POST("predict")
+    fun predictSymtomps(
+        @Body symtomps: SymtompEntity
+    ): Call<ArrayList<PredictionResponse>>
 }
