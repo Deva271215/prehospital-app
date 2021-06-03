@@ -1,32 +1,31 @@
 package com.g_one_nursesapp
 
 import android.content.Intent
-import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.g_one_nursesapp.ChatFieldActivity.Companion.IMAGE_VIEW
 import com.g_one_nursesapp.adapters.ChatFieldAdapter
+import com.g_one_nursesapp.api.FirebaseRESTClient
 import com.g_one_nursesapp.api.MLAPIClient
 import com.g_one_nursesapp.api.RetrofitClient
+import com.g_one_nursesapp.api.requests.DataSchema
+import com.g_one_nursesapp.api.requests.NotificationRequest
 import com.g_one_nursesapp.api.response.ChatResponse
 import com.g_one_nursesapp.api.response.HospitalsResponse
+import com.g_one_nursesapp.api.response.NotificationResponse
 import com.g_one_nursesapp.api.response.PredictionResponse
 import com.g_one_nursesapp.api.socket.InitChatPayload
 import com.g_one_nursesapp.api.socket.SendBulkMessagesPayload
 import com.g_one_nursesapp.databinding.ActivityChatFieldBinding
 import com.g_one_nursesapp.entity.MessageEntity
-import com.g_one_nursesapp.entity.SymtompEntity
 import com.g_one_nursesapp.preference.UserPreference
 import com.g_one_nursesapp.utility.Global
 import com.g_one_nursesapp.utility.SocketIOInstance
@@ -34,7 +33,7 @@ import com.g_one_nursesapp.viewmodels.ChatFieldViewModel
 import com.github.nkzawa.socketio.client.Ack
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_main.toolbar
+import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -92,6 +91,9 @@ class ChatFieldActivity : AppCompatActivity() {
             preference.setSelectedHospital(selectedHospital!!)
 
             getAllMessagesFromLocalDatabase(selectedHospital)
+
+            val hospitalId = Gson().fromJson(selectedHospital, HospitalsResponse::class.java).id
+            sendNotification(hospitalId)
         }
 
         Log.i("symtomps", Global.symtomps.toString())
@@ -247,6 +249,29 @@ class ChatFieldActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ArrayList<PredictionResponse>>, t: Throwable) {
+                Toast.makeText(this@ChatFieldActivity, t.message, Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private fun sendNotification(hospitalId: String) {
+        val chatId = Gson().fromJson(preference.getActiveChat(), ChatResponse::class.java).id
+        val dataSchema = DataSchema(
+            title = "EMERGENCY",
+            body = "Ketuk untuk melihat rekam medis pasien",
+            clickAction = "MAINACTIVITY",
+            chatId = chatId
+        )
+        val notificationRequest = NotificationRequest(topic = hospitalId, data = dataSchema)
+        FirebaseRESTClient.instance.sendMotification(notificationRequest).enqueue(object: Callback<NotificationResponse> {
+            override fun onResponse(
+                call: Call<NotificationResponse>,
+                response: Response<NotificationResponse>,
+            ) {
+                Toast.makeText(this@ChatFieldActivity, response.body()?.messageId!!, Toast.LENGTH_LONG).show()
+            }
+
+            override fun onFailure(call: Call<NotificationResponse>, t: Throwable) {
                 Toast.makeText(this@ChatFieldActivity, t.message, Toast.LENGTH_LONG).show()
             }
         })
