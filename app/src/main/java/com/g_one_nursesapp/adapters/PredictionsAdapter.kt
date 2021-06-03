@@ -20,7 +20,7 @@ class PredictionsAdapter: RecyclerView.Adapter<PredictionsAdapter.ViewHolder>() 
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         fun bind(item: PredictionResponse) {
-            val value = String.format("%.2f", item.value).toDouble()
+            val value = String.format("%.1f", item.value).toDouble()
             with(itemView) {
                 traumaName.text = item.label
                 traumaPercent.text = "${value*100}%"
