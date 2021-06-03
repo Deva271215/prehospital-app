@@ -31,6 +31,13 @@ interface Api {
     @GET("chats")
     fun getChats(@Header("Authorization") header: String): Call<ArrayList<ChatResponse>>
 
+    @PUT("chats/{id}")
+    fun updateChatPrediction(
+        @Header("Authorization") header: String,
+        @Path("id") id: String,
+        @Query("p") p: String,
+    ): Call<BasicResponse>
+
     @GET("chats/hospital/{id}")
     fun getChatsByHospital(
         @Path("id") id: String,

@@ -12,6 +12,9 @@ data class ChatResponse(
     @field:SerializedName("hospital")
     val hospital: HospitalsResponse,
 
+    @field:SerializedName("prediction")
+    val prediction: String,
+
     @field:SerializedName("is_deleted")
     val isDeleted: Boolean,
 
