@@ -3,6 +3,7 @@ package com.g_one_nursesapp
 import android.content.Intent
 import android.media.Image
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -16,14 +17,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.g_one_nursesapp.ChatFieldActivity.Companion.IMAGE_VIEW
 import com.g_one_nursesapp.adapters.ChatFieldAdapter
+import com.g_one_nursesapp.api.MLAPIClient
 import com.g_one_nursesapp.api.RetrofitClient
 import com.g_one_nursesapp.api.response.ChatResponse
 import com.g_one_nursesapp.api.response.HospitalsResponse
+import com.g_one_nursesapp.api.response.PredictionResponse
 import com.g_one_nursesapp.api.socket.InitChatPayload
 import com.g_one_nursesapp.api.socket.SendBulkMessagesPayload
 import com.g_one_nursesapp.databinding.ActivityChatFieldBinding
 import com.g_one_nursesapp.entity.MessageEntity
+import com.g_one_nursesapp.entity.SymtompEntity
 import com.g_one_nursesapp.preference.UserPreference
+import com.g_one_nursesapp.utility.Global
 import com.g_one_nursesapp.utility.SocketIOInstance
 import com.g_one_nursesapp.viewmodels.ChatFieldViewModel
 import com.github.nkzawa.socketio.client.Ack
@@ -49,6 +54,7 @@ class ChatFieldActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatFieldBinding
     private val socket = SocketIOInstance()
     private var messages = ArrayList<SendBulkMessagesPayload>()
+    private var predictions = ArrayList<PredictionResponse>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +91,8 @@ class ChatFieldActivity : AppCompatActivity() {
 
             getAllMessagesFromLocalDatabase(selectedHospital)
         }
+
+        Log.i("symtomps", Global.symtomps.toString())
     }
 
     override fun onBackPressed() {
@@ -116,8 +124,7 @@ class ChatFieldActivity : AppCompatActivity() {
                 )
 
                 bottomSheetView.findViewById<View>(R.id.button_done).setOnClickListener {
-                    val intent = Intent(this, PredictionsActivity::class.java)
-                    startActivity(intent)
+                    makePrediction()
                 }
                 bottomSheetDone.setContentView(bottomSheetView)
                 bottomSheetDone.show()
@@ -220,4 +227,26 @@ class ChatFieldActivity : AppCompatActivity() {
         })
     }
 
+    private fun makePrediction() {
+        MLAPIClient.instance.predictSymtomps(Global.symtomps).enqueue(object: Callback<ArrayList<PredictionResponse>> {
+            override fun onResponse(
+                call: Call<ArrayList<PredictionResponse>>,
+                response: Response<ArrayList<PredictionResponse>>,
+            ) {
+                if (response.isSuccessful) {
+                    predictions = response.body()!!
+
+                    val intent = Intent(this@ChatFieldActivity, PredictionsActivity::class.java)
+                    intent.putExtra(PredictionsActivity.PREDICTION, Gson().toJson(predictions))
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this@ChatFieldActivity, "Error occurred", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<PredictionResponse>>, t: Throwable) {
+                Toast.makeText(this@ChatFieldActivity, t.message, Toast.LENGTH_LONG).show()
+            }
+        })
+    }
 }

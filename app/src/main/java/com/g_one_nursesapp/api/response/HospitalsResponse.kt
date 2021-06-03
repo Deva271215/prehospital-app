@@ -48,4 +48,7 @@ data class HospitalsResponse(
 
     @field:SerializedName("deleted_at")
     val deletedAt: String,
+
+    @field:SerializedName("distances_from_ambulance")
+    val distancesFromAmbulance: Double?
 )
