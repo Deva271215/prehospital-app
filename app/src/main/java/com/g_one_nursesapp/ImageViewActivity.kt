@@ -29,8 +29,7 @@ class ImageViewActivity : AppCompatActivity() {
 
     private fun closeFun() {
         backButton.setOnClickListener{
-            val intent = Intent(this, ChatFieldActivity::class.java)
-            startActivity(intent)
+            onBackPressed()
         }
     }
 }

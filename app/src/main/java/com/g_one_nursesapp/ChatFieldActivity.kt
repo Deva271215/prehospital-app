@@ -64,8 +64,10 @@ class ChatFieldActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         // Adapter
+        val layoutManager = LinearLayoutManager(applicationContext)
         chatFieldAdapter = ChatFieldAdapter()
-        binding.rvChatField.layoutManager = LinearLayoutManager(applicationContext)
+        binding.rvChatField.layoutManager = layoutManager
+        layoutManager.stackFromEnd = true
         binding.rvChatField.adapter = chatFieldAdapter
 
         // View model

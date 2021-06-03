@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         preference = UserPreference(applicationContext)
         preference.setIsHospitalSelected(false)
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         setBottomSheetStart()
 
+        binding.toolbar.title = " "
         binding.toolbar.setNavigationOnClickListener{
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
