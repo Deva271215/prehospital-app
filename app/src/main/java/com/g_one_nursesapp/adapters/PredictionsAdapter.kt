@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.predictions_list.view.*
 class PredictionsAdapter: RecyclerView.Adapter<PredictionsAdapter.ViewHolder>() {
     private var predictions = ArrayList<PredictionResponse>()
 
-    fun setPredictions(p: ArrayList<PredictionResponse>) {
+    fun setPredictions(p: MutableList<PredictionResponse>) {
         predictions.clear()
         predictions.addAll(p)
         notifyDataSetChanged()

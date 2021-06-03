@@ -35,7 +35,8 @@ class PredictionsActivity : AppCompatActivity() {
         val predictions = intent.getStringExtra(PREDICTION)
         val arrayListPredictionsType = object: TypeToken<ArrayList<PredictionResponse>>() {}.type
         val res = Gson().fromJson<ArrayList<PredictionResponse>>("""$predictions""", arrayListPredictionsType)
-        adapter.setPredictions(res)
+        val splitList = res.subList(0, 3)
+        adapter.setPredictions(splitList)
 
         binding.buttonFinish.setOnClickListener{
             val intent = Intent(this, HistoryActivity::class.java)
