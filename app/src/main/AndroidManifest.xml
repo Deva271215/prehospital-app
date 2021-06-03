@@ -3,7 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.g_one_nursesapp">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
+        android:name=".utility.Global"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name_navbar"
         android:roundIcon="@mipmap/ic_launcher_round"

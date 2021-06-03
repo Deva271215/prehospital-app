@@ -14,6 +14,7 @@ import com.g_one_nursesapp.api.response.ChatResponse
 import com.g_one_nursesapp.databinding.ActivityRespirationsCheckBinding
 import com.g_one_nursesapp.entity.MessageEntity
 import com.g_one_nursesapp.preference.UserPreference
+import com.g_one_nursesapp.utility.Global
 import com.g_one_nursesapp.utility.SocketIOInstance
 import com.g_one_nursesapp.viewmodels.RespirationCheckViewModel
 import com.google.gson.Gson
@@ -52,6 +53,20 @@ class RespirationsCheckActivity : AppCompatActivity() {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
                 val value = adapterView?.getItemAtPosition(position).toString()
                 checkResult = if (position != 0) value else ""
+                when(position) {
+                    1 -> {
+                        Global.symtomps.kesulitanBernafas = 1
+                        Global.symtomps.dahakBerlendir = 0
+                        Global.symtomps.kesulitanBerbicara = 0
+                        Global.symtomps.detakJantungBertambah = 0
+                    }
+                    2 -> {
+                        Global.symtomps.kesulitanBernafas = 0
+                        Global.symtomps.dahakBerlendir = 1
+                        Global.symtomps.kesulitanBerbicara = 1
+                        Global.symtomps.detakJantungBertambah = 1
+                    }
+                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
