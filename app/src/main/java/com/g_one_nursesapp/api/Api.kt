@@ -1,5 +1,6 @@
 package com.g_one_nursesapp.api
 
+import com.g_one_nursesapp.api.requests.NotificationRequest
 import com.g_one_nursesapp.api.response.*
 import com.g_one_nursesapp.entity.MessageEntity
 import com.g_one_nursesapp.entity.SymtompEntity
@@ -56,4 +57,15 @@ interface Api {
     fun predictSymtomps(
         @Body symtomps: SymtompEntity
     ): Call<ArrayList<PredictionResponse>>
+
+    // Firebase
+    @POST("message:send")
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: applicaton/json",
+        "Authorization: key=AAAAgssjZbs:APA91bHQNCe38M-SxE6NVsggZcr3tl_sCxtG-fz46W4OZOOGBwSYLe_bgqmeSBjeShyAYpk1R_qIWGj2FH-W5jwpKkywgx64hK8vLrV9w3Yw1f1bMYqbQBe0MzBrCivKomBsKQOAMcQc"
+    )
+    fun sendMotification(
+        @Body notif: NotificationRequest
+    ): Call<NotificationResponse>
 }
