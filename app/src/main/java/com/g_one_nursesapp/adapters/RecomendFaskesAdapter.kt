@@ -26,7 +26,7 @@ class RecomendFaskesAdapter: RecyclerView.Adapter<RecomendFaskesAdapter.ViewHold
             with(itemView) {
                 tv_hospital.text = item.name
                 tv_hospital_class.text = item.category.toString()
-                tv_hospital_distance.text = "${item.distancesFromAmbulance} km"
+                tv_hospital_distance.text = "${String.format("%.1f", item.distancesFromAmbulance).toDouble()} km"
 
                 setOnClickListener {
                     val intent = Intent(itemView.context, ChatFieldActivity::class.java)

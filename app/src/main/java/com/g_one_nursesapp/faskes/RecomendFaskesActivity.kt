@@ -56,8 +56,6 @@ class RecomendFaskesActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Rekomendasi Faskes"
-
-        displayHospitals()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -119,6 +117,8 @@ class RecomendFaskesActivity : AppCompatActivity() {
                         latitude = location.latitude
                         longitude = location.longitude
                     }
+
+                    displayHospitals()
                 }
             } else {
                 Toast.makeText(this, "Please turn on your device location", Toast.LENGTH_LONG).show()

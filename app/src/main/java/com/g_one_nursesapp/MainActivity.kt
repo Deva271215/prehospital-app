@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         preference = UserPreference(applicationContext)
         preference.setIsHospitalSelected(false)
@@ -46,11 +48,16 @@ class MainActivity : AppCompatActivity() {
 
         setBottomSheetStart()
 
+        binding.toolbar.title = " "
         binding.toolbar.setNavigationOnClickListener{
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
         binding.mulaiButton.setOnClickListener { bottomSheetDialog.show() }
+
+        val groupName = preference.getLoginData()?.user?.group_name
+        Log.i("groupName", groupName.toString())
+        binding.groupName.text = groupName
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.predictions_list.view.*
 class PredictionsAdapter: RecyclerView.Adapter<PredictionsAdapter.ViewHolder>() {
     private var predictions = ArrayList<PredictionResponse>()
 
-    fun setPredictions(p: ArrayList<PredictionResponse>) {
+    fun setPredictions(p: MutableList<PredictionResponse>) {
         predictions.clear()
         predictions.addAll(p)
         notifyDataSetChanged()
@@ -20,7 +20,7 @@ class PredictionsAdapter: RecyclerView.Adapter<PredictionsAdapter.ViewHolder>() 
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         fun bind(item: PredictionResponse) {
-            val value = String.format("%.2f", item.value).toDouble()
+            val value = String.format("%.1f", item.value).toDouble()
             with(itemView) {
                 traumaName.text = item.label
                 traumaPercent.text = "${value*100}%"

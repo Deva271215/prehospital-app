@@ -2,24 +2,28 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.g_one_nursesapp">
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".utility.Global"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name_navbar"
+        android:label="Nurses App"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:replace="android:label">
+
+        <activity android:name=".ImageViewActivity"
+            android:theme="@style/Theme.GoneNursesApp"/>
         <activity
             android:name=".PredictionsActivity"
             android:theme="@style/Theme.GoneNursesApp" />
         <activity
             android:name=".auth.signup.SignupActivity"
-            android:label="@string/title_activity_signup"
-            android:theme="@style/Theme.GoneNursesAppSecond" />
+            android:theme="@style/Theme.GoneNursesApp" />
         <activity
             android:name=".EditProfileActivity"
             android:theme="@style/Theme.GoneNursesAppSecond" />
@@ -31,8 +35,7 @@
             android:theme="@style/Theme.GoneNursesAppSecond" />
         <activity
             android:name=".auth.login.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:theme="@style/Theme.GoneNursesAppSecond">
+            android:theme="@style/Theme.GoneNursesApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,7 +44,7 @@
         </activity>
         <activity
             android:name=".actions.AdditionalNotesActivity"
-            android:theme="@style/Theme.GoneNursesAppSecond"/>
+            android:theme="@style/Theme.GoneNursesAppSecond" />
         <activity
             android:name=".actions.InjuryCheckActivity"
             android:theme="@style/Theme.GoneNursesAppSecond" />
@@ -77,8 +80,5 @@
                 android:resource="@xml/fileprovider" />
         </provider>
     </application>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

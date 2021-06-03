@@ -94,7 +94,7 @@
     <string name="isi_text_pertama">Foto posisi korban sebelum dilakukan pertolongan.</string>
     <string name="foto_posisi">Foto Posisi Awal korban di lokasi.</string>
     <string name="mulai_foto">Mulai Foto</string>
-    <string name="title_activity_chat_field">Live Rekam Medis</string>
+    <string name="title_activity_chat_field">Lembar catatan korban</string>
     <string name="title_activity_list_actions">Daftar Tindakan</string>
 
     <string name="hello_world">Hello Square World!</string>
@@ -102,7 +102,7 @@
     <string name="prompt_injury">Pilih cidera</string>
     <string name="prompt_additional_injury">Masukan kondisi lainnya</string>
     <string name="prompt_injury_optional">Cidera tambahan (opsional)</string>
-    
+
     <!-- Respiration check items -->
     <string-array name="checking_result_items">
         <item>Hasil Pemeriksaan</item>

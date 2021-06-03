@@ -27,7 +27,7 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
             val date = LocalDateTime.parse(splitDate[0])
             val formatter = DateTimeFormatter.ofPattern("dd LLLL YYYY")
             with(itemView) {
-                traumaName.text = "Patah tulang"
+                traumaName.text = item.prediction
                 historyTime.text = formatter.format(date)
                 historyName.text = item.hospital.name
                 setOnClickListener {

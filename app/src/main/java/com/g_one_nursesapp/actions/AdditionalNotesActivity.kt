@@ -116,5 +116,9 @@ class AdditionalNotesActivity : AppCompatActivity() {
         socket.getSocket()?.emit("send_message", Gson().toJson(message))
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 
 }
