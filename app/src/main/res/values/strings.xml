@@ -94,7 +94,7 @@
     <string name="isi_text_pertama">Foto posisi korban sebelum dilakukan pertolongan.</string>
     <string name="foto_posisi">Foto Posisi Awal korban di lokasi.</string>
     <string name="mulai_foto">Mulai Foto</string>
-    <string name="title_activity_chat_field">Live Rekam Medis</string>
+    <string name="title_activity_chat_field">Lembar catatan penderita</string>
     <string name="title_activity_list_actions">Daftar Tindakan</string>
 
     <string name="hello_world">Hello Square World!</string>
