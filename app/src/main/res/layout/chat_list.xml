@@ -43,23 +43,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"
             android:background="@drawable/ic_launcher_background"
             android:contentDescription="@string/gambar_pertolongan" />
-    </androidx.cardview.widget.CardView>
 
-<!--    <TextView-->
-<!--        android:id="@+id/text_hasil"-->
-<!--        android:layout_width="320dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="15dp"-->
-<!--        android:layout_marginStart="20dp"-->
-<!--        android:fontFamily="@font/robotoregular"-->
-<!--        android:text="@string/text_hasil"-->
-<!--        android:textSize="15sp"-->
-<!--        android:visibility="gone"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/cardView"-->
-<!--        tools:ignore="MissingConstraints" />-->
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/value_hasil"

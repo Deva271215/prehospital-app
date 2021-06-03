@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -51,6 +52,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.mulaiButton.setOnClickListener { bottomSheetDialog.show() }
+
+        val groupName = preference.getLoginData()?.user?.group_name
+        Log.i("groupName", groupName.toString())
+        binding.groupName.text = groupName
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -102,7 +102,7 @@
     <string name="prompt_injury">Pilih cidera</string>
     <string name="prompt_additional_injury">Masukan kondisi lainnya</string>
     <string name="prompt_injury_optional">Cidera tambahan (opsional)</string>
-    
+
     <!-- Respiration check items -->
     <string-array name="checking_result_items">
         <item>Hasil Pemeriksaan</item>

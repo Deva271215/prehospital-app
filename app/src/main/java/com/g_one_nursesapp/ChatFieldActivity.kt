@@ -1,16 +1,20 @@
 package com.g_one_nursesapp
 
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.g_one_nursesapp.ChatFieldActivity.Companion.IMAGE_VIEW
 import com.g_one_nursesapp.adapters.ChatFieldAdapter
 import com.g_one_nursesapp.api.RetrofitClient
 import com.g_one_nursesapp.api.response.ChatResponse
@@ -33,6 +37,7 @@ import retrofit2.Response
 class ChatFieldActivity : AppCompatActivity() {
     companion object {
         const val IS_HOSPITAL_SELECTED = "IS_HOSPITAL_SELECTED"
+        const val IMAGE_VIEW = "IMAGE_VIEW"
         const val SELECTED_HOSPITAL = "SELECTED_HOSPITAL"
         const val CHAT_ROOM_ID = "CHAT_ROOM_ID"
         const val IS_FROM_HISTORY = "IS_FROM_HISTORY"
@@ -214,4 +219,5 @@ class ChatFieldActivity : AppCompatActivity() {
             }
         })
     }
+
 }
