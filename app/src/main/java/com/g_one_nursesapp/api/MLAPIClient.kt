@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object MLAPIClient {
     // private const val PROD_URL = "https://canary-dot-g-one-db.an.r.appspot.com"
-    private const val DEV_URL = "http://192.168.18.10:8081/"
+    private const val DEV_URL = "https://mlapi-dot-g-one-db.an.r.appspot.com"
 
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor { chain ->
